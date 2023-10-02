@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+Main.class
+.replit
+replit.nix
+.breakpoints
