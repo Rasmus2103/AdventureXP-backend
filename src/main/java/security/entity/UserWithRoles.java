@@ -40,17 +40,17 @@ public class UserWithRoles implements UserDetails {
   private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   @Id
-  @Column(nullable = false,length = 50,unique = true)
+  @Column(nullable = false, length = 50, unique = true)
   String username;
 
-  @Column(nullable = false,length = 50,unique = true)
+  @Column(nullable = false, length = 50, unique = true)
   String email;
 
   //60 = length of a bcrypt encoded password
   @Column(nullable = false, length = 60)
   String password;
 
-  private boolean enabled= true;
+  private boolean enabled = true;
 
   @CreationTimestamp
   private LocalDate created;
@@ -64,16 +64,17 @@ public class UserWithRoles implements UserDetails {
   @CollectionTable(name = "security_role")
   List<Role> roles = new ArrayList<>();
 
-  public UserWithRoles() {}
+  public UserWithRoles() {
+  }
 
 
-  public UserWithRoles(String user, String password, String email){
+  public UserWithRoles(String user, String password, String email) {
     this.username = user;
     setPassword(password);
     this.email = email;
   }
 
-  public void setPassword(String pw){
+  public void setPassword(String pw) {
     this.password = passwordEncoder.encode(pw);
   }
 
@@ -97,20 +98,17 @@ public class UserWithRoles implements UserDetails {
 
   //You can, but are NOT expected to use the fields below
   @Override
-  public boolean isAccountNonExpired() {return enabled;}
+  public boolean isAccountNonExpired() {
+    return enabled;
+  }
 
   @Override
-  public boolean isAccountNonLocked() { return enabled;}
+  public boolean isAccountNonLocked() {
+    return enabled;
+  }
 
   @Override
-  public boolean isCredentialsNonExpired() { return enabled; }
-
-  @Override
-  public boolean isEnabled() { return enabled; }
-
-  @Override
-    public String getPassword() { return password; }
-
-    @Override
-    public String getUsername() { return username; }
+  public boolean isCredentialsNonExpired() {
+    return enabled;
+  }
 }
