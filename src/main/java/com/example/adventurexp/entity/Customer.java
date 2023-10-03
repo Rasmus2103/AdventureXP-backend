@@ -1,4 +1,6 @@
 package com.example.adventurexp.entity;
 
-public class Customer extends User {
+import security.entity.UserWithRoles;
+
+public class Customer extends UserWithRoles {
 }

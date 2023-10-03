@@ -1,4 +1,4 @@
 package com.example.adventurexp.entity;
 
-public class Reservation {
+public class Reservation extends AdminDetails {
 }

@@ -1,4 +1,4 @@
 package com.example.adventurexp.entity;
 
-public class Shift {
+public class Shift extends AdminDetails {
 }
