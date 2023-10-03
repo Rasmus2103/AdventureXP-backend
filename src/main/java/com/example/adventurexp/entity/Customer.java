@@ -33,9 +33,9 @@ public class Customer extends UserWithRoles {
     private String email;
     @Column
     private String address;
-
+    /*
     @OneToMany(mappedBy = "costumer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Reservation> reservations;
+    private List<Reservation> reservations; */
 
     public Customer(String firstName, String lastName, String phoneNumber, String email, String address) {
         this.firstName = firstName;
@@ -43,13 +43,15 @@ public class Customer extends UserWithRoles {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
-        this.reservations = new ArrayList<>();
+       // this.reservations = new ArrayList<>();
     }
-
+/*
     public void addReservation(Reservation reservation){
         if (reservations == null)
             reservations = new ArrayList<>();
         reservations.add(reservation);
     }
+    */
+
 
 }
