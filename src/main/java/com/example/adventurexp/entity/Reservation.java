@@ -19,7 +19,7 @@ public class Reservation extends AdminDetails {
     private int id;
     @ManyToOne()
     private Customer customer;
-    @ManyToMany()
-    private List<Activity> activity;
+    /*@ManyToMany()
+    private List<Activity> activity;*/
 
 }
