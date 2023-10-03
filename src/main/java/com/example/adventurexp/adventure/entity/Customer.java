@@ -17,9 +17,7 @@ import com.example.adventurexp.security.entity.UserWithRoles;
 @DiscriminatorColumn(name = "USER_TYPE")
 public class Customer extends UserWithRoles {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
     @Column
     private String firstName;
     @Column
@@ -27,18 +25,16 @@ public class Customer extends UserWithRoles {
     @Column
     private String phoneNumber;
     @Column
-    private String email;
-    @Column
     private String address;
     /*
     @OneToMany(mappedBy = "costumer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations; */
 
-    public Customer(String firstName, String lastName, String phoneNumber, String email, String address) {
+    public Customer(String firstName, String lastName, String phoneNumber, String address, String username, String password, String email) {
+        super(username, password, email);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.email = email;
         this.address = address;
        // this.reservations = new ArrayList<>();
     }
