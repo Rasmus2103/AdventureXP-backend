@@ -7,6 +7,7 @@ If you change anything here, you must also change this annotation, used on roles
  */
 public enum Role {
     USER,
+    EMPLOYEE,
     ADMIN;
 
     public static Role fromString(String roleString) {
