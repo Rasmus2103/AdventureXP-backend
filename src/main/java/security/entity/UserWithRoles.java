@@ -104,4 +104,13 @@ public class UserWithRoles implements UserDetails {
 
   @Override
   public boolean isCredentialsNonExpired() { return enabled; }
+
+  @Override
+  public boolean isEnabled() { return enabled; }
+
+  @Override
+    public String getPassword() { return password; }
+
+    @Override
+    public String getUsername() { return username; }
 }
