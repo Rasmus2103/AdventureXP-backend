@@ -1,12 +1,9 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy JAR app to Azure Web App - adventure-xp
 
 on:
   push:
     branches:
-      - prod
+      - dev
   workflow_dispatch:
 
 jobs:
@@ -38,6 +35,15 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
+      - name: Check if current commit is in prod branch
+        run: |
+          if git branch -r --contains HEAD | grep -q "origin/prod"; then
+            echo "Commit is in prod branch, proceeding with deployment."
+          else
+            echo "Commit is not in prod branch, exiting."
+            exit 78
+          fi
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
@@ -51,3 +57,4 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_78B721AA72894719B2F14FE050C99FE3 }}
           package: '*.jar'
+
