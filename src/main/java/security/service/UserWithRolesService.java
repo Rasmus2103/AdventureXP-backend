@@ -1,10 +1,10 @@
 package security.service;
 
-import dat3.security.dto.UserWithRolesRequest;
-import dat3.security.dto.UserWithRolesResponse;
-import dat3.security.entity.Role;
-import dat3.security.entity.UserWithRoles;
-import dat3.security.repository.UserWithRolesRepository;
+import security.dto.UserWithRolesRequest;
+import security.dto.UserWithRolesResponse;
+import security.entity.Role;
+import security.entity.UserWithRoles;
+import security.repository.UserWithRolesRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
