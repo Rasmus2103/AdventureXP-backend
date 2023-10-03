@@ -33,9 +33,9 @@ public class Employee extends UserWithRoles {
     private String email;
     @Column
     private String address;
-
+    /*
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Shift> shifts;
+    private List<Shift> shifts; */
 
     public Employee(String firstName, String lastName, String phoneNumber, String email, String address) {
         this.firstName = firstName;
@@ -43,12 +43,14 @@ public class Employee extends UserWithRoles {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
-        this.shifts = new ArrayList<>();
+        //this.shifts = new ArrayList<>();
     }
-
+/*
     public void addShift(Shift shift){
         if (shifts == null)
             shifts = new ArrayList<>();
         shifts.add(shift);
     }
+    */
+
 }
