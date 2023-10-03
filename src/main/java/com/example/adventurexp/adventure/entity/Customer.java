@@ -29,6 +29,8 @@ public class Customer extends UserWithRoles {
     private String phoneNumber;
     @Column
     private String address;
+    @Column
+    private int credit;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations;
