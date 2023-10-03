@@ -1,7 +1,6 @@
 package security.dto;
 
-
-import dat3.security.entity.UserWithRoles;
+import security.entity.UserWithRoles;
 import lombok.Getter;
 import lombok.Setter;
 

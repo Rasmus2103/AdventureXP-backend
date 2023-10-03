@@ -1,7 +1,7 @@
 package security.service;
 
-import dat3.security.entity.UserWithRoles;
-import dat3.security.repository.UserWithRolesRepository;
+import security.entity.UserWithRoles;
+import security.repository.UserWithRolesRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

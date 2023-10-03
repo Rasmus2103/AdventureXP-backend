@@ -1,6 +1,6 @@
 package security.for_security_tests;
 
-import dat3.security.service.UserWithRolesService;
+import security.service.UserWithRolesService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Profile;
