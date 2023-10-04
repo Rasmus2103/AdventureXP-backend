@@ -26,6 +26,7 @@ jobs:
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
+          retention-days: 1
 
   deploy:
     runs-on: ubuntu-latest
@@ -35,15 +36,6 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
-      - name: Check if current commit is in prod branch
-        run: |
-          if git branch -r --contains HEAD | grep -q "origin/prod"; then
-            echo "Commit is in prod branch, proceeding with deployment."
-          else
-            echo "Commit is not in prod branch, exiting."
-            exit 78
-          fi
-
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
