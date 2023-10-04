@@ -28,24 +28,24 @@ public class Reservation extends AdminDetails {
     private Activity activity;
     @Column
     private double totalPrice;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime reservationStart;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime reservationEnd;
 
     public Reservation(Customer customer, int participants, Activity activity, LocalDateTime reservationStart, LocalDateTime reservationEnd) {
         this.customer = customer;
         this.participants = participants;
         this.activity = activity;
-        calculateTotalPrice();
         this.reservationStart = reservationStart;
         this.reservationEnd = reservationEnd;
+        calculateTotalPrice();
         customer.addReservation(this);
     }
 
     private void calculateTotalPrice() {
         double pricePerHour = activity.getPrice();
-        long durationInHours = Duration.between(reservationStart, reservationEnd).toHours();
+        double durationInHours = (double) reservationStart.getHour() - reservationEnd.getHour();
         this.totalPrice = pricePerHour * durationInHours;
     }
 

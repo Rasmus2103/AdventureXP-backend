@@ -147,11 +147,9 @@ public class DataSetup implements ApplicationRunner {
                         Activity activity = activities.get(random.nextInt(activities.size()));
                        //generate random LocalDateTime from 2023-11-01 to 2023-11-30
                         LocalDateTime reservationStart = LocalDateTime.of(2023, 11, 1, 0, 0).plusDays(random.nextInt(30)).plusHours(random.nextInt(24));
-                        LocalDateTime reservationEnd = reservationStart.plusHours(reservationStart.getHour() + random.nextInt(5) + 1);
+                        LocalDateTime reservationEnd = reservationStart.plusHours(-1).plusHours(random.nextInt(5) + 1);
 
                         Reservation reservation = new Reservation(customer, participants, activity, reservationStart, reservationEnd);
-
-
 
                         reservations.add(reservation);
                 }
