@@ -60,7 +60,7 @@ public class EmployeeService {
         }
         employee.setFirstName(body.getFirstName());
         employee.setLastName(body.getLastName());
-        employee.getPhoneNumber(body.getPhoneNumber());
+        employee.setPhoneNumber(body.getPhoneNumber());
         employee.setAddress(body.getAddress());
         employeeRepo.save(employee);
     }
