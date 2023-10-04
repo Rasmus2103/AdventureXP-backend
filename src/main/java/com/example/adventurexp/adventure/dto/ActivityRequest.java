@@ -1,10 +1,7 @@
 package com.example.adventurexp.adventure.dto;
 
 import com.example.adventurexp.adventure.entity.Activity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -26,7 +23,7 @@ public class ActivityRequest {
 
     public ActivityRequest(Activity activity){
         this.name = activity.getName();
-        this.price = activity.getPrice();
+        this.price = activity.getPricePrHour();
         this.minAge = activity.getMinAge();
         this.capacity = activity.getCapacity();
     }

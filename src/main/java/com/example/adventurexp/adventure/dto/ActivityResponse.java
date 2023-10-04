@@ -3,9 +3,7 @@ package com.example.adventurexp.adventure.dto;
 import com.example.adventurexp.adventure.entity.Activity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
 import lombok.*;
-import org.hibernate.mapping.List;
 
 import java.time.LocalDate;
 
@@ -30,7 +28,7 @@ public class ActivityResponse {
 
     public ActivityResponse(Activity activity, boolean includeAll) {
         this.name = activity.getName();
-        this.price = activity.getPrice();
+        this.price = activity.getPricePrHour();
         this.minAge = activity.getMinAge();
         this.capacity = activity.getCapacity();
         if (includeAll) {

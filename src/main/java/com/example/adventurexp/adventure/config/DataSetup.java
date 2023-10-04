@@ -8,6 +8,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,13 +21,15 @@ public class DataSetup implements ApplicationRunner {
         final ShiftRepo shiftRepo;
         final ReservationRepo reservationRepo;
         final ActivityRepo activityRepo;
+        final ArrangementRepo arrangementRepo;
 
-        public DataSetup ( EmployeeRepo employeeRepo, CustomerRepo customerRepo, ShiftRepo shiftRepo, ReservationRepo reservationRepo, ActivityRepo activityRepo){
+        public DataSetup ( EmployeeRepo employeeRepo, CustomerRepo customerRepo, ShiftRepo shiftRepo, ReservationRepo reservationRepo, ActivityRepo activityRepo, ArrangementRepo arrangementRepo){
                 this.employeeRepo = employeeRepo;
                 this.customerRepo = customerRepo;
                 this.shiftRepo = shiftRepo;
                 this.reservationRepo = reservationRepo;
                 this.activityRepo = activityRepo;
+                this.arrangementRepo = arrangementRepo;
         }
 
         @Override
@@ -55,10 +58,11 @@ public class DataSetup implements ApplicationRunner {
                 List<Reservation> reservations = generateReservations(10, customers, activities);
                 reservationRepo.saveAll(reservations);
 
+                /*List<Arrangement> arrangements = generateArrangements(5, customers, reservations);
+                arrangementRepo.saveAll(arrangements);*/
+
                 List<Shift> shifts = generateShifts(10, employees1);
                 shiftRepo.saveAll(shifts);
-
-
 
         }
 
@@ -139,22 +143,46 @@ public class DataSetup implements ApplicationRunner {
 
                 for (int i = 0; i < numberOfReservations; i++) {
                         Customer customer = customers.get(random.nextInt(customers.size()));
-                        LocalDate reservationStart = LocalDate.now().plusDays(random.nextInt(30)); // Random start date within the next 30 days
-                        LocalDate reservationEnd = reservationStart.plusDays(random.nextInt(5) + 1); // Random end date within 1-5 days
+                        int participants = random.nextInt(10) + 1; // Random number of participants between 1 and 10
+                        Activity activity = activities.get(random.nextInt(activities.size()));
+                       //generate random LocalDateTime from 2023-11-01 to 2023-11-30
+                        LocalDateTime reservationStart = LocalDateTime.of(2023, 11, 1, 0, 0).plusDays(random.nextInt(30)).plusHours(random.nextInt(24));
+                        LocalDateTime reservationEnd = reservationStart.plusHours(reservationStart.getHour() + random.nextInt(5) + 1);
 
-                        Reservation reservation = new Reservation(customer, reservationStart, reservationEnd);
+                        Reservation reservation = new Reservation(customer, participants, activity, reservationStart, reservationEnd);
 
-                        int numActivities = random.nextInt(activities.size()) + 1; // Random number of activities (1 to the total number of activities)
-                        for (int j = 0; j < numActivities; j++) {
-                                Activity activity = activities.get(random.nextInt(activities.size()));
-                                reservation.addActivity(activity);
-                        }
+
 
                         reservations.add(reservation);
                 }
 
                 return reservations;
         }
+
+        public static List<Arrangement> generateArrangements(int numberOfArrangements, List<Customer> customers, List<Reservation> reservations) {
+                List<Arrangement> arrangements = new ArrayList<>();
+                Random random = new Random();
+
+                for (int i = 0; i < numberOfArrangements; i++) {
+                        Customer customer = customers.get(random.nextInt(customers.size()));
+                        int participants = random.nextInt(50) + 1; // Random number of participants between 1 and 10
+                        String[] names = {"Birthday party", "Company outing", "Bachelor party", "Bachelorette party", "Family reunion", "Wedding"};
+                        String name = names[random.nextInt(names.length)];
+                        Arrangement arrangement = new Arrangement(customer, participants, name);
+
+                        int numReservations = random.nextInt(reservations.size()) + 1; // Random number of activities (1 to the total number of activities)
+                        for (int j = 0; j < numReservations; j++) {
+                                Reservation reservation = reservations.get(random.nextInt(reservations.size()));
+                                arrangement.addReservation(reservation);
+                        }
+
+                        arrangements.add(arrangement);
+                }
+
+                return arrangements;
+        }
+
+
 
         public static List<Shift> generateShifts(int numberOfShifts, List<Employee> employees) {
                 List<Shift> shifts = new ArrayList<>();
