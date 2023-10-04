@@ -34,7 +34,7 @@ public class EmployeeController {
         return employeeService.addEmployee(body);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{username}")
     ResponseEntity<Boolean> editMember(@RequestBody EmployeeRequest body, @PathVariable String username){
         return employeeService.editMember(body, username);
     }
