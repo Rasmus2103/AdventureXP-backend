@@ -1,6 +1,5 @@
 package com.example.adventurexp.adventure.api;
 
-import com.example.adventurexp.adventure.dto.ActivityRequest;
 import com.example.adventurexp.adventure.dto.ActivityResponse;
 import com.example.adventurexp.adventure.service.ActivityService;
 import org.springframework.web.bind.annotation.CrossOrigin;

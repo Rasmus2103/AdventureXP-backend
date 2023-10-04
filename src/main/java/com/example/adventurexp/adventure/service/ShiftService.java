@@ -1,4 +1,4 @@
-package com.example.adventurexp.adventure.entity;
+package com.example.adventurexp.adventure.service;
 
 import com.example.adventurexp.adventure.dto.ShiftRequest;
 import com.example.adventurexp.adventure.dto.ShiftResponse;
