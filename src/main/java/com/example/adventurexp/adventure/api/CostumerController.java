@@ -28,7 +28,7 @@ public class CostumerController {
         return customerService.getCustomers(false);
     }
 
-    @GetMapping(path = "/{username")
+    @GetMapping(path = "/{username}")
     CustomerResponse getCustomerByUsername(@PathVariable String username) {
         return customerService.findById(username);
     }
