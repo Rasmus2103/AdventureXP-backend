@@ -1,10 +1,8 @@
-package com.example.adventurexp.adventure.service;
+package com.example.adventurexp.adventure.entity;
 
-import com.example.adventurexp.adventure.dto.ReservationResponse;
 import com.example.adventurexp.adventure.dto.ShiftRequest;
 import com.example.adventurexp.adventure.dto.ShiftResponse;
 import com.example.adventurexp.adventure.entity.Employee;
-import com.example.adventurexp.adventure.entity.Reservation;
 import com.example.adventurexp.adventure.entity.Shift;
 import com.example.adventurexp.adventure.repository.EmployeeRepo;
 import com.example.adventurexp.adventure.repository.ShiftRepo;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
