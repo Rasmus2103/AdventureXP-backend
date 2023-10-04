@@ -32,9 +32,9 @@ public class Arrangement extends AdminDetails {
     private String name;
     @Column
     private double aggregatePrice;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime arrangementStart;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime arrangementEnd;
 
     public Arrangement(Customer customer, int participants, String name) {
