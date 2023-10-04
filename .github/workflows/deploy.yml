@@ -3,7 +3,7 @@ name: Build and deploy JAR app to Azure Web App - adventure-xp
 on:
   push:
     branches:
-      - dev
+      - prod
   workflow_dispatch:
 
 jobs:
