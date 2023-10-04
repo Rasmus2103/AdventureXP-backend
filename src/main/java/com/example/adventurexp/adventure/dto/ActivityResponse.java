@@ -28,7 +28,7 @@ public class ActivityResponse {
 
     public ActivityResponse(Activity activity, boolean includeAll) {
         this.name = activity.getName();
-        this.pricePrHour = activity.getPricePrHour();
+        this.pricePrHour = activity.getPrice();
         this.minAge = activity.getMinAge();
         this.capacity = activity.getCapacity();
         if (includeAll) {
