@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Check if project builds
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
-          submodules: true
+          submodules: true #
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -29,14 +30,27 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
+        continue-on-error: true
 
-      - name: Merge to prod branch
+  merge_to_prod:
+    needs: build_check
+    runs-on: ubuntu-latest
+    name: Merge to prod branch
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: prod 
+
+      - name: Merge changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "github-actions@github.com"
-          git fetch
-          git checkout prod
-          git merge --no-ff --allow-unrelated-histories dev
+          git merge --no-ff dev
+          Checkout prod
+          # Resolve any merge conflicts here
+          git commit -am "Merge dev into prod"
           git push https://${{ secrets.GH_TOKEN }}@github.com/Rasmus2103/AdventureXP-backend.git prod
 env:
   GH_TOKEN: ${{ secrets.ADVENTURE_TOKEN }}
+

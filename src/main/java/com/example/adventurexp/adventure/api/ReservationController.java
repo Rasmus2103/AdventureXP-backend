@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("api/reservation")
-public class ReserverationController {
+public class ReservationController {
 }
