@@ -30,6 +30,7 @@ public class Shift extends AdminDetails {
         this.employee = employee;
         this.shiftStart = shiftStart;
         this.shiftEnd = shiftEnd;
+        employee.addShift(this);
     }
 
 }

@@ -37,4 +37,14 @@ public class ShiftResponse {
             this.edited = shift.getEdited();
         }
     }
+
+    public ShiftResponse(Shift shift, boolean includeAll, boolean difference) {
+        this.shiftStart = shift.getShiftStart();
+        this.shiftEnd = shift.getShiftEnd();
+        if (includeAll) {
+            this.id = shift.getId();
+            this.created = shift.getCreated();
+            this.edited = shift.getEdited();
+        }
+    }
 }
