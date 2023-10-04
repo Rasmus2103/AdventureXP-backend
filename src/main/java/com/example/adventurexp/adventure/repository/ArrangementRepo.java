@@ -1,7 +1,8 @@
 package com.example.adventurexp.adventure.repository;
 
+import com.example.adventurexp.adventure.entity.Arrangement;
 import com.example.adventurexp.adventure.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ArrangementRepo extends JpaRepository<Reservation,Integer> {
+public interface ArrangementRepo extends JpaRepository<Arrangement,Integer> {
 }
