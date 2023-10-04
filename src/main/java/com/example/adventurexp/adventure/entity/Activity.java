@@ -20,7 +20,7 @@ public class Activity extends AdminDetails {
     @Column
     private String name;
     @Column
-    private double pricePrHour;
+    private double price;
     @Column
     private int minAge;
     @Column
@@ -28,9 +28,9 @@ public class Activity extends AdminDetails {
 
 
 
-    public Activity(String name, double pricePrHour, int minAge, int capacity) {
+    public Activity(String name, double price, int minAge, int capacity) {
         this.name = name;
-        this.pricePrHour = pricePrHour;
+        this.price = price;
         this.minAge = minAge;
         this.capacity = capacity;
     }

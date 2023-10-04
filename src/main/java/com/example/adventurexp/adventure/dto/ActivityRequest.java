@@ -23,7 +23,7 @@ public class ActivityRequest {
 
     public ActivityRequest(Activity activity){
         this.name = activity.getName();
-        this.pricePrHour = activity.getPricePrHour();
+        this.pricePrHour = activity.getPrice();
         this.minAge = activity.getMinAge();
         this.capacity = activity.getCapacity();
     }
