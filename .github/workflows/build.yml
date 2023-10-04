@@ -46,9 +46,11 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "github-actions@github.com"
-          git merge --no-ff --allow-unrelated-histories ${{ github.sha }}
+          git checkout prod
+          git merge --no-ff dev
+          # Resolve any merge conflicts here
+          git commit -am "Merge dev into prod"
           git push https://${{ secrets.GH_TOKEN }}@github.com/Rasmus2103/AdventureXP-backend.git prod
-
 env:
   GH_TOKEN: ${{ secrets.ADVENTURE_TOKEN }}
 
