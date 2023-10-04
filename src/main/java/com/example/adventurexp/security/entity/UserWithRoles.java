@@ -1,6 +1,7 @@
 package com.example.adventurexp.security.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -53,13 +54,15 @@ public class UserWithRoles implements UserDetails {
   private boolean enabled = true;
 
   @CreationTimestamp
+  @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
   private LocalDate created;
 
   @UpdateTimestamp
+  @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
   private LocalDate edited;
 
   @Enumerated(EnumType.STRING)
-  @Column(columnDefinition = "ENUM('USER','ADMIN')")
+  @Column(columnDefinition = "ENUM('USER','EMPLOYEE','ADMIN')")
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "security_role")
   List<Role> roles = new ArrayList<>();

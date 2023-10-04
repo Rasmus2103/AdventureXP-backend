@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 import com.example.adventurexp.security.entity.UserWithRoles;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,9 +29,11 @@ public class Customer extends UserWithRoles {
     private String phoneNumber;
     @Column
     private String address;
-    /*
-    @OneToMany(mappedBy = "costumer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Reservation> reservations; */
+    @Column
+    private int credit;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Reservation> reservations;
 
     public Customer(String firstName, String lastName, String phoneNumber, String address, String username, String password, String email) {
         super(username, password, email);
@@ -36,15 +41,15 @@ public class Customer extends UserWithRoles {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.address = address;
-       // this.reservations = new ArrayList<>();
+        this.reservations = new ArrayList<>();
     }
-/*
+
     public void addReservation(Reservation reservation){
         if (reservations == null)
             reservations = new ArrayList<>();
         reservations.add(reservation);
     }
-    */
+
 
 
 }
