@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,26 +23,31 @@ public class Reservation extends AdminDetails {
     private int id;
     @ManyToOne()
     private Customer customer;
-    @ManyToMany()
-    private List<Activity> activities;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate reservationStart;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate reservationEnd;
+    @Column
+    private int participants;
+    @ManyToOne()
+    private Activity activity;
+    @Column
+    private double totalPrice;
+    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime reservationStart;
+    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime reservationEnd;
 
-    public Reservation(Customer customer, LocalDate reservationStart, LocalDate reservationEnd) {
+    public Reservation(Customer customer, int participants, Activity activity, LocalDateTime reservationStart, LocalDateTime reservationEnd) {
         this.customer = customer;
-        this.activities = new ArrayList<>();
+        this.participants = participants;
+        this.activity = activity;
+        calculateTotalPrice();
         this.reservationStart = reservationStart;
         this.reservationEnd = reservationEnd;
         customer.addReservation(this);
     }
 
-    public void addActivity(Activity activity){
-        if (activities == null)
-            activities = new ArrayList<>();
-        else
-            activities.add(activity);
+    private void calculateTotalPrice() {
+        double pricePerHour = activity.getPricePrHour();
+        long durationInHours = Duration.between(reservationStart, reservationEnd).toHours();
+        this.totalPrice = pricePerHour * durationInHours;
     }
 
 }

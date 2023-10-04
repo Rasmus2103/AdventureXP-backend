@@ -3,8 +3,7 @@ package com.example.adventurexp.adventure.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,15 +14,17 @@ import java.util.List;
 public class ReservationRequest {
 
     String username;
-    List<Integer> activityIds;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate reservationStart;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate reservationEnd;
+    int participants;
+    int activityId;
+    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime reservationStart;
+    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime reservationEnd;
 
     public ReservationRequest(ReservationResponse r){
         this.username = r.getCustomer().getUsername();
-        this.activityIds = r.getActivitiesAsId();
+        this.participants = r.getParticipants();
+        this.activityId = r.getActivity().getId();
         this.reservationStart = r.getReservationStart();
         this.reservationEnd = r.getReservationEnd();
     }
