@@ -12,18 +12,18 @@ import lombok.*;
 public class ActivityRequest {
 
     private String name;
-    private double price;
+    private double pricePrHour;
     private int minAge;
     private int capacity;
 
     public static Activity getActivityEntity(ActivityRequest activity){
-        return new Activity(activity.getName(), activity.getPrice(),
+        return new Activity(activity.getName(), activity.getPricePrHour(),
                 activity.getMinAge(), activity.getCapacity());
     }
 
     public ActivityRequest(Activity activity){
         this.name = activity.getName();
-        this.price = activity.getPricePrHour();
+        this.pricePrHour = activity.getPricePrHour();
         this.minAge = activity.getMinAge();
         this.capacity = activity.getCapacity();
     }

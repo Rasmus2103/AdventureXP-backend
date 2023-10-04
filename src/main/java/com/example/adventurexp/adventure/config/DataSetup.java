@@ -58,8 +58,8 @@ public class DataSetup implements ApplicationRunner {
                 List<Reservation> reservations = generateReservations(10, customers, activities);
                 reservationRepo.saveAll(reservations);
 
-                /*List<Arrangement> arrangements = generateArrangements(5, customers, reservations);
-                arrangementRepo.saveAll(arrangements);*/
+                List<Arrangement> arrangements = generateArrangements(5, customers, reservations);
+                arrangementRepo.saveAll(arrangements);
 
                 List<Shift> shifts = generateShifts(10, employees1);
                 shiftRepo.saveAll(shifts);
@@ -126,11 +126,11 @@ public class DataSetup implements ApplicationRunner {
 
                 for (int i = 0; i < numberOfActivities; i++) {
                         String name = activityNames[random.nextInt(activityNames.length)];
-                        double price = prices[random.nextInt(prices.length)];
+                        double pricePrHour = prices[random.nextInt(prices.length)];
                         int minAge = random.nextInt(18) + 5; // Random age between 5 and 22
                         int capacity = random.nextInt(20) + 1; // Random capacity between 1 and 20
 
-                        Activity activity = new Activity(name, price, minAge, capacity);
+                        Activity activity = new Activity(name, pricePrHour, minAge, capacity);
                         activities.add(activity);
                 }
 

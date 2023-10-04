@@ -18,7 +18,7 @@ public class ActivityResponse {
 
     int id;
     private String name;
-    private double price;
+    private double pricePrHour;
     private int minAge;
     private int capacity;
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
@@ -28,7 +28,7 @@ public class ActivityResponse {
 
     public ActivityResponse(Activity activity, boolean includeAll) {
         this.name = activity.getName();
-        this.price = activity.getPricePrHour();
+        this.pricePrHour = activity.getPricePrHour();
         this.minAge = activity.getMinAge();
         this.capacity = activity.getCapacity();
         if (includeAll) {
