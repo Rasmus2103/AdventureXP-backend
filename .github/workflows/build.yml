@@ -46,7 +46,6 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "github-actions@github.com"
-          git checkout prod
           git merge --no-ff dev
           # Resolve any merge conflicts here
           git commit -am "Merge dev into prod"
