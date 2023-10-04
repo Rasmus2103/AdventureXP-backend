@@ -1,7 +1,7 @@
 package com.example.adventurexp.adventure.api;
 
 import com.example.adventurexp.adventure.dto.ShiftResponse;
-import com.example.adventurexp.adventure.service.ShiftService;
+import com.example.adventurexp.adventure.entity.ShiftService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

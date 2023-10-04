@@ -2,9 +2,6 @@ package com.example.adventurexp.adventure.api;
 
 import com.example.adventurexp.adventure.dto.CustomerRequest;
 import com.example.adventurexp.adventure.dto.CustomerResponse;
-import com.example.adventurexp.adventure.dto.EmployeeRequest;
-import com.example.adventurexp.adventure.dto.EmployeeResponse;
-import com.example.adventurexp.adventure.entity.Customer;
 import com.example.adventurexp.adventure.service.CustomerService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

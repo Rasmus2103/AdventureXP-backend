@@ -3,7 +3,6 @@ package com.example.adventurexp.adventure.dto;
 import com.example.adventurexp.adventure.entity.Customer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;

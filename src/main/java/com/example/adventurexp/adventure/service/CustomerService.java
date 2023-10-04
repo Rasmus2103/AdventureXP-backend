@@ -1,9 +1,7 @@
 package com.example.adventurexp.adventure.service;
 
 import com.example.adventurexp.adventure.dto.*;
-import com.example.adventurexp.adventure.entity.Activity;
 import com.example.adventurexp.adventure.entity.Customer;
-import com.example.adventurexp.adventure.entity.Employee;
 import com.example.adventurexp.adventure.repository.CustomerRepo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
