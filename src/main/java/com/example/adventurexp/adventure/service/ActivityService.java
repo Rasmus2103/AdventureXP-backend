@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 public class ActivityService {
 
     ActivityRepo activityRepo;
+
     public ActivityService(ActivityRepo activityRepo) {
         this.activityRepo = activityRepo;
     }
