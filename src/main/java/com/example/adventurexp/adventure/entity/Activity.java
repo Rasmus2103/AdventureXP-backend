@@ -26,8 +26,6 @@ public class Activity extends AdminDetails {
     @Column
     private int capacity;
 
-
-
     public Activity(String name, double price, int minAge, int capacity) {
         this.name = name;
         this.price = price;
