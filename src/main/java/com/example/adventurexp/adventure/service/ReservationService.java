@@ -23,6 +23,7 @@ public class ReservationService {
     CustomerRepo customerRepo;
     ActivityRepo activityRepo;
 
+
     public ReservationService(ReservationRepo reservationRepo, CustomerRepo customerRepo, ActivityRepo activityRepo) {
         this.reservationRepo = reservationRepo;
         this.customerRepo = customerRepo;
@@ -44,15 +45,28 @@ public class ReservationService {
         if(body.getReservationStart().isBefore(LocalDateTime.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date in past not allowed");
         }
-
+        if (body.getReservationStart().isAfter(body.getReservationEnd())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date must be before end date");
+        }
         Customer customer = customerRepo.findByUsername(body.getUsername());
         if(customer == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
         }
-
         Activity activity = activityRepo.findById(body.getActivityId());
         if(activity == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid activity");
+        }
+        List<Reservation> activityReservations = activity.getReservations();
+        if (!activityReservations.isEmpty()) {
+            for (Reservation r : activityReservations) {
+                if (body.getReservationStart().isBefore(r.getReservationEnd()) &&
+                        body.getReservationEnd().isAfter(r.getReservationStart()) ||
+                        body.getReservationStart().isEqual(r.getReservationStart()) ||
+                        body.getReservationEnd().isEqual(r.getReservationEnd())
+                ) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "activity is reserved in this period");
+                }
+            }
         }
 
         Reservation reservation = new Reservation();
@@ -66,7 +80,7 @@ public class ReservationService {
 
         Reservation savedReservation = reservationRepo.save(reservation);
 
-        return new ReservationResponse(savedReservation, true, true, true);
+        return new ReservationResponse(savedReservation, true, false, false);
     }
 
     public List<Reservation> getReservationsByCustomer(String username) {

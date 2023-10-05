@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,12 +29,21 @@ public class Activity extends AdminDetails {
     @Column
     private int capacity;
 
+    @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY)
+    private List<Reservation> reservations;
+
     public Activity(String name, double price, int minAge, int capacity) {
         this.name = name;
         this.price = price;
         this.minAge = minAge;
         this.capacity = capacity;
+        this.reservations = new ArrayList<>();
     }
 
+    public void addReservation(Reservation reservation){
+        if (reservations == null)
+            reservations = new ArrayList<>();
+        reservations.add(reservation);
+    }
 
 }

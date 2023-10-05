@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class ShiftRequest {
 
     private String employeeUsername;
+    private int activityId;
     @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime shiftStart;
     @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
@@ -23,6 +24,7 @@ public class ShiftRequest {
 
     public ShiftRequest(Shift shift) {
         this.employeeUsername = shift.getEmployee().getUsername();
+        this.activityId = shift.getActivity().getId();
         this.shiftStart = shift.getShiftStart();
         this.shiftEnd = shift.getShiftEnd();
     }

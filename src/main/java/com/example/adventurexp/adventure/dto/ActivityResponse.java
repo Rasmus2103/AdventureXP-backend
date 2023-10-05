@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +26,7 @@ public class ActivityResponse {
     LocalDate created;
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     LocalDate edited;
+    List<ReservationResponse> reservations;
 
     public ActivityResponse(Activity activity, boolean includeAll) {
         this.name = activity.getName();
@@ -35,7 +37,12 @@ public class ActivityResponse {
             this.id = activity.getId();
             this.created = activity.getCreated();
             this.edited = activity.getEdited();
+            this.reservations = activity.getReservations().stream().map(r -> new ReservationResponse(r, false, false, false)).toList();
         }
+    }
+
+    public void addReservation(ReservationResponse reservation) {
+        reservations.add(reservation);
     }
 
 }

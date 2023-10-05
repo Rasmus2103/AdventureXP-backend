@@ -190,7 +190,7 @@ public class DataSetup implements ApplicationRunner {
                         LocalDateTime shiftStart = LocalDateTime.now().plusDays(random.nextInt(30)); // Random start date within the next 30 days
                         LocalDateTime shiftEnd = shiftStart.plusDays(random.nextInt(5) + 1); // Random end date within 1-5 days
 
-                        Shift shift = new Shift(employee, shiftStart, shiftEnd);
+                        Shift shift = new Shift(employee, generateActivities(1).get(0), shiftStart, shiftEnd);
                         shifts.add(shift);
                 }
 

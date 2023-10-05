@@ -1,5 +1,9 @@
 package com.example.adventurexp.service;
 
+import com.example.adventurexp.adventure.dto.ActivityResponse;
+import com.example.adventurexp.adventure.dto.CustomerResponse;
+import com.example.adventurexp.adventure.dto.ReservationRequest;
+import com.example.adventurexp.adventure.dto.ReservationResponse;
 import com.example.adventurexp.adventure.entity.Activity;
 import com.example.adventurexp.adventure.entity.Customer;
 import com.example.adventurexp.adventure.entity.Reservation;
@@ -12,7 +16,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 public class reservationServiceTest {
@@ -42,9 +51,23 @@ public class reservationServiceTest {
 
     @Test
     void testGetReservationsAllDetails() {
-        //List<ReservationResponse> reservationResponses = reservationService.getReservations(true, true, true);
-        //LocalDate time = reservationResponses.get(0).getCreated();
-        //assertNotNull(time, "expects date to be set when true is passed for getreservations");
+        List<ReservationResponse> reservationResponses = reservationService.getReservations(true, false, false);
+        ActivityResponse activityResponse = reservationResponses.get(0).getActivity();
+        CustomerResponse customerResponse = reservationResponses.get(0).getCustomer();
+        LocalDateTime timeStart = reservationResponses.get(0).getReservationStart();
+        LocalDateTime timeEnd = reservationResponses.get(0).getReservationEnd();
+        assertNotNull(timeStart);
+        assertNotNull(timeEnd);
+        assertNotNull(activityResponse);
+        assertNotNull(customerResponse);
+    }
+
+    @Test
+    void addReservationSucces() {
+        ReservationRequest r3 = new ReservationRequest(c1.getUsername(), 8, a1.getId(), LocalDateTime.now(), LocalDateTime.now().plusHours(1));
+        ReservationResponse response = reservationService.makeReservation(r3);
+        assertEquals(c1.getUsername(), response.getCustomer().getUsername());
+        assertEquals(a1.getName(), response.getActivity().getName());
     }
 
 
