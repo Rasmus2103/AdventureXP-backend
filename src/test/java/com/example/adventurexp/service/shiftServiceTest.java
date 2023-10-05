@@ -1,7 +1,7 @@
 package com.example.adventurexp.service;
 
 import com.example.adventurexp.adventure.repository.ShiftRepo;
-import com.example.adventurexp.adventure.entity.ShiftService;
+import com.example.adventurexp.adventure.service.ShiftService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
