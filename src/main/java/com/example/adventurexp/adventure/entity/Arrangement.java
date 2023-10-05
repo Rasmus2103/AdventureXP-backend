@@ -37,11 +37,13 @@ public class Arrangement extends AdminDetails {
     @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime arrangementEnd;
 
-    public Arrangement(Customer customer, int participants, String name) {
+    public Arrangement(Customer customer, int participants, String name, LocalDateTime arrangementStart, LocalDateTime arrangementEnd) {
         this.customer = customer;
         this.participants = participants;
         this.reservations = new ArrayList<>();
         this.name = name;
+        this.arrangementStart = arrangementStart;
+        this.arrangementEnd = arrangementEnd;
         calculateAggregatePrice();
         calculateAggregateDuration();
     }

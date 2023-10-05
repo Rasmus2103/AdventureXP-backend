@@ -64,6 +64,20 @@ public class CustomerService {
         return new CustomerResponse(customer, true);
     }
 
+    public ResponseEntity<Boolean> addCredits(String username, double credits){
+        Customer customer = getCustomerByUsername(username);
+        customer.setCredit(customer.getCredit() + credits);
+        customerRepo.save(customer);
+        return ResponseEntity.ok(true);
+    }
+
+    public ResponseEntity<Boolean> removeCredits(String username, double credits){
+        Customer customer = getCustomerByUsername(username);
+        customer.setCredit(customer.getCredit() - credits);
+        customerRepo.save(customer);
+        return ResponseEntity.ok(true);
+    }
+
     private Customer getCustomerByUsername(String username) {
         return customerRepo.findById(username).
                 orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Member with this username does not exist"));

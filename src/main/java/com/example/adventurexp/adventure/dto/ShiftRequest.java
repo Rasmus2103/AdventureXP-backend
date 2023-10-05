@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,13 +16,15 @@ import java.time.LocalDate;
 public class ShiftRequest {
 
     private String employeeUsername;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate shiftStart;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate shiftEnd;
+    private int activityId;
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime shiftStart;
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime shiftEnd;
 
     public ShiftRequest(Shift shift) {
         this.employeeUsername = shift.getEmployee().getUsername();
+        this.activityId = shift.getActivity().getId();
         this.shiftStart = shift.getShiftStart();
         this.shiftEnd = shift.getShiftEnd();
     }

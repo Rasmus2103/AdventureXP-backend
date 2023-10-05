@@ -30,7 +30,7 @@ public class Customer extends UserWithRoles {
     @Column
     private String address;
     @Column
-    private int credit;
+    private double credit;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations;
