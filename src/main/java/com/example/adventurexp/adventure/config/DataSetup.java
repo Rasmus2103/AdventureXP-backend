@@ -61,9 +61,8 @@ public class DataSetup implements ApplicationRunner {
                 List<Arrangement> arrangements = generateArrangements(5, customers, reservations);
                 arrangementRepo.saveAll(arrangements);
 
-                List<Shift> shifts = generateShifts(10, employees1);
+                List<Shift> shifts = generateShifts(10, employees1 );
                 shiftRepo.saveAll(shifts);
-
         }
 
 
