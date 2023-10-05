@@ -1,5 +1,6 @@
 package com.example.adventurexp.service;
 
+import com.example.adventurexp.adventure.dto.ActivityRequest;
 import com.example.adventurexp.adventure.dto.ActivityResponse;
 import com.example.adventurexp.adventure.entity.Activity;
 import com.example.adventurexp.adventure.repository.ActivityRepo;
@@ -8,12 +9,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class activityServiceTest {
@@ -41,10 +44,10 @@ public class activityServiceTest {
     void testGetActivitiesNoDetails() {
         List<ActivityResponse> activityResponses = activityService.getActivities(false);
         LocalDate time = activityResponses.get(0).getCreated();
-        assertNotNull(time, "expects date to not be set when false is passed for getactivities");
+        assertNull(time, "expects date to not be set when false is passed for getactivities");
     }
 
-    /*
+
     @Test
     void testFindByIdFound() {
         ActivityResponse response = activityService.findById(a1.getId());
@@ -53,11 +56,41 @@ public class activityServiceTest {
 
      @Test
     void testFindByIdNotFound() {
-        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> activityService.findById("i dont exist"));
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> activityService.findById(3));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
-    */
+    @Test
+    void testAddActivity() {
+        ActivityResponse response = activityService.addActivity(new ActivityRequest("a3", 300, 3,3));
+        assertEquals("a3", response.getName());
+        assertEquals(300, response.getPricePrHour());
+        assertEquals(3, response.getCapacity());
+    }
+
+    @Test
+    void testUpdateActivitySucces() {
+        assertEquals(ResponseEntity.ok(true), activityService.editActivity(new ActivityRequest("a3", 300, 3,3), a1.getId()));
+    }
+
+    @Test
+    void testUpdateActivityFail() {
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> activityService.editActivity(new ActivityRequest("a3", 300, 3,3), 3));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testDeleteActivity() {
+        assertEquals(ResponseEntity.ok(true), activityService.deleteActivity(a1.getId()));
+    }
+
+    @Test
+    void testDeleteActivityFail() {
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> activityService.deleteActivity(3));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+
 
 
 

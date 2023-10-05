@@ -1,5 +1,6 @@
 package com.example.adventurexp.adventure.service;
 
+import com.example.adventurexp.adventure.dto.ReservationResponse;
 import com.example.adventurexp.adventure.dto.ShiftRequest;
 import com.example.adventurexp.adventure.dto.ShiftResponse;
 import com.example.adventurexp.adventure.entity.Activity;
@@ -52,5 +53,15 @@ public class ShiftService {
         Shift shift = new Shift(employee, activity, body.getShiftStart(), body.getShiftEnd());
         shift = shiftRepo.save(shift);
         return new ShiftResponse(shift, includeAll);
+    }
+
+    public ShiftResponse findById(int id) {
+        Shift shift = getShiftById(id);
+        return new ShiftResponse(shift, true);
+    }
+
+    private Shift getShiftById(int id) {
+        return shiftRepo.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No shift with this ID is found"));
     }
 }

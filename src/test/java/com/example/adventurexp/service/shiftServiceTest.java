@@ -64,7 +64,7 @@ public class shiftServiceTest {
         assertNotNull(endDate);
     }
 
-    /*
+
     @Test
     void testFindByIdFound(){
         ReservationResponse response = shiftService.findById(s1.getId());
@@ -76,7 +76,7 @@ public class shiftServiceTest {
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> shiftService.findById(3));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-    */
+
 
     @Test
     void addShiftSucces() {
