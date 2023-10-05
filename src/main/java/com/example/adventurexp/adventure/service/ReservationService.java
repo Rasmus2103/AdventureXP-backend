@@ -8,6 +8,7 @@ import com.example.adventurexp.adventure.entity.Reservation;
 import com.example.adventurexp.adventure.repository.ActivityRepo;
 import com.example.adventurexp.adventure.repository.CustomerRepo;
 import com.example.adventurexp.adventure.repository.ReservationRepo;
+import com.example.adventurexp.adventure.repository.ShiftRepo;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,7 +24,7 @@ public class ReservationService {
     CustomerRepo customerRepo;
     ActivityRepo activityRepo;
 
-    public ReservationService(ReservationRepo reservationRepo, CustomerRepo customerRepo, ActivityRepo activityRepo) {
+    public ReservationService(ReservationRepo reservationRepo, CustomerRepo customerRepo, ActivityRepo activityRepo, ShiftRepo shiftRepo) {
         this.reservationRepo = reservationRepo;
         this.customerRepo = customerRepo;
         this.activityRepo = activityRepo;
@@ -50,7 +51,7 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
         }
 
-        Activity activity = activityRepo.findById(body.getActivityId());
+        Activity activity = activityRepo.findAllById(body.getActivityId());
         if(activity == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid activity");
         }
