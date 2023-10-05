@@ -33,9 +33,8 @@ public class ShiftService {
     public List<ShiftResponse> getShifts(boolean includeAll) {
         List<Shift> shifts = shiftRepo.findAll();
 
-        List<ShiftResponse> shiftResponses = shifts.stream().map(shift -> new ShiftResponse(shift, includeAll)).toList();
+        return shifts.stream().map(shift -> new ShiftResponse(shift, includeAll)).toList();
 
-        return shiftResponses;
     }
 
     public ShiftResponse addShift(ShiftRequest body, boolean includeAll) {
@@ -47,6 +46,8 @@ public class ShiftService {
 
         Activity activity = activityRepo.findById(body.getActivityId()).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No activity with this ID is found"));
+
+        employee.getShifts();
 
         Shift shift = new Shift(employee, activity, body.getShiftStart(), body.getShiftEnd());
         shift = shiftRepo.save(shift);
