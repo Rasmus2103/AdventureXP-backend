@@ -2,16 +2,14 @@ package com.example.adventurexp.adventure.service;
 
 import com.example.adventurexp.adventure.dto.ReservationRequest;
 import com.example.adventurexp.adventure.dto.ReservationResponse;
-import com.example.adventurexp.adventure.entity.Activity;
-import com.example.adventurexp.adventure.entity.Customer;
-import com.example.adventurexp.adventure.entity.Reservation;
-import com.example.adventurexp.adventure.entity.Shift;
+import com.example.adventurexp.adventure.entity.*;
 import com.example.adventurexp.adventure.repository.ActivityRepo;
 import com.example.adventurexp.adventure.repository.CustomerRepo;
 import com.example.adventurexp.adventure.repository.ReservationRepo;
 import com.example.adventurexp.adventure.repository.ShiftRepo;
 import org.antlr.v4.runtime.ParserInterpreter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -48,6 +46,14 @@ public class ReservationService {
         return response;
     }
 
+    public ReservationResponse findById(int id) {
+        Reservation reservation = getReservationByID(id);
+        if (reservation == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No reservation with this ID is found");
+        }
+        return new ReservationResponse(reservation, true, false, false);
+    }
+
     public ReservationResponse makeReservation(ReservationRequest body) {
         if (body.getReservationStart().isBefore(LocalDateTime.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date in past not allowed");
@@ -63,6 +69,8 @@ public class ReservationService {
         if (activity == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid activity");
         }
+
+        // TODO nedenstående virker ikke som det skal endnu
         DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
         String resStart = df.format(body.getReservationStart());
         String resEnd = df.format(body.getReservationEnd());
@@ -119,6 +127,34 @@ public class ReservationService {
         Customer customer = customerRepo.findById(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No customer with this USERNAME is found"));
         return reservationRepo.findByCustomer(customer);
+    }
+
+    public List<Reservation> getReservationsByActivity(int id) {
+        Activity activity = activityRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No activity with this ID is found"));
+        return reservationRepo.findByActivity(activity);
+    }
+
+    public ResponseEntity<Boolean> deleteReservation(int id) {
+        Reservation reservation = getReservationByID(id);
+        reservationRepo.delete(reservation);
+        return ResponseEntity.ok(true);
+    }
+
+    public ResponseEntity<Boolean> editReservation (ReservationRequest body, int id) {
+        Reservation reservation = getReservationByID(id);
+        reservation.setReservationStart(body.getReservationStart());
+        reservation.setReservationEnd(body.getReservationEnd());
+        reservation.setParticipants(body.getParticipants());
+        reservation.setEdited(LocalDate.now());
+        reservation.setActivity(activityRepo.getReferenceById(body.getActivityId()));
+        reservationRepo.save(reservation);
+        return ResponseEntity.ok(true);
+    }
+
+    private Reservation getReservationByID(int id) {
+        return reservationRepo.findById(id).
+                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Member with this username does not exist"));
     }
 
 }
