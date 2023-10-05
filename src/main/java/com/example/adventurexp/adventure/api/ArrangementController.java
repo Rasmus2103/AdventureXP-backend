@@ -18,9 +18,6 @@ public class ArrangementController {
         this.arrangementService = arrangementService;
     }
 
-    /**
-     * GET /arrangements/{id}
-     */
     @GetMapping("/{id}")
     public ArrangementResponse getArrangementById(@PathVariable int id) {
         return arrangementService.getArrangementById(id);
@@ -47,9 +44,6 @@ public class ArrangementController {
         return arrangementService.editArrangement(id, body, reservationIds);
     }
 
-    /**
-     * DELETE /arrangements/{id}
-     */
     @DeleteMapping("/delete/{id}")
     public void deleteArrangement(@PathVariable int id) {
         arrangementService.deleteArrangement(id);
