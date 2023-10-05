@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,7 +34,7 @@ public class ShiftService {
     }
 
     public ShiftResponse addShift(ShiftRequest body, boolean includeAll) {
-        if(body.getShiftStart().isBefore(LocalDate.now())) {
+        if(body.getShiftStart().isBefore(LocalDateTime.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date in past not allowed");
         }
         Employee employee = employeeRepo.findById(body.getEmployeeUsername()).orElseThrow(

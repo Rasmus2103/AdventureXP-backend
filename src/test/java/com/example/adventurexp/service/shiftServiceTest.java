@@ -10,6 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @DataJpaTest
 public class shiftServiceTest {
 
@@ -28,6 +31,8 @@ public class shiftServiceTest {
     void setUp() {
         e1 = employeeRepo.save(new Employee("f1", "l1", "p1", "a1", "u1", "p1", "e1" ));
         e2 = employeeRepo.save(new Employee("f2", "l2", "p2", "a2", "u2", "p2", "e2" ));
+        s1 = shiftRepo.save(new Shift(e1, LocalDateTime.now(), LocalDateTime.now().plusDays(3)));
+        s2 = shiftRepo.save(new Shift(e2, LocalDateTime.now(), LocalDateTime.now().plusDays(3)));
         shiftService = new ShiftService(shiftRepo, employeeRepo);
 
     }

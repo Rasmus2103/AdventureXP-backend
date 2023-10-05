@@ -187,8 +187,8 @@ public class DataSetup implements ApplicationRunner {
 
                 for (int i = 0; i < numberOfShifts; i++) {
                         Employee employee = employees.get(random.nextInt(employees.size()));
-                        LocalDate shiftStart = LocalDate.now().plusDays(random.nextInt(30)); // Random start date within the next 30 days
-                        LocalDate shiftEnd = shiftStart.plusDays(random.nextInt(5) + 1); // Random end date within 1-5 days
+                        LocalDateTime shiftStart = LocalDateTime.now().plusDays(random.nextInt(30)); // Random start date within the next 30 days
+                        LocalDateTime shiftEnd = shiftStart.plusDays(random.nextInt(5) + 1); // Random end date within 1-5 days
 
                         Shift shift = new Shift(employee, shiftStart, shiftEnd);
                         shifts.add(shift);

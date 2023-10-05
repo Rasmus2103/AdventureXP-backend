@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,12 +22,12 @@ public class Shift extends AdminDetails {
     private int id;
     @ManyToOne()
     private Employee employee;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate shiftStart;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate shiftEnd;
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime shiftStart;
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime shiftEnd;
 
-    public Shift(Employee employee, LocalDate shiftStart, LocalDate shiftEnd) {
+    public Shift(Employee employee, LocalDateTime shiftStart, LocalDateTime shiftEnd) {
         this.employee = employee;
         this.shiftStart = shiftStart;
         this.shiftEnd = shiftEnd;
