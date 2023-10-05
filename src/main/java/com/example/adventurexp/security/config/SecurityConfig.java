@@ -92,6 +92,12 @@ public class SecurityConfig {
 //            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservations/reservations-for-authenticated")).hasAuthority("USER")
 //            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservations")).hasAuthority("USER")
 //            .anyRequest().authenticated()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/{id}")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/name/{arrangementName}")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/arrangements/create")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/arrangements/edit/{id}")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/arrangements/delete/{id}")).permitAll()
 //
             );
 
