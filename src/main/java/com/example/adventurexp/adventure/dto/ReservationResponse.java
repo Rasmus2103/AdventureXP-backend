@@ -22,9 +22,9 @@ public class ReservationResponse {
     int participants;
     ActivityResponse activity;
     double totalPrice;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH", shape = JsonFormat.Shape.STRING)
     LocalDateTime reservationStart;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH", shape = JsonFormat.Shape.STRING)
     LocalDateTime reservationEnd;
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     LocalDate created;

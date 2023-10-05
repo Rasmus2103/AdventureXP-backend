@@ -4,9 +4,11 @@ import com.example.adventurexp.adventure.dto.ReservationRequest;
 import com.example.adventurexp.adventure.dto.ReservationResponse;
 import com.example.adventurexp.adventure.entity.Activity;
 import com.example.adventurexp.adventure.entity.Customer;
+import com.example.adventurexp.adventure.entity.Employee;
 import com.example.adventurexp.adventure.entity.Reservation;
 import com.example.adventurexp.adventure.repository.ActivityRepo;
 import com.example.adventurexp.adventure.repository.CustomerRepo;
+import com.example.adventurexp.adventure.repository.EmployeeRepo;
 import com.example.adventurexp.adventure.repository.ReservationRepo;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,13 @@ public class ReservationService {
     ReservationRepo reservationRepo;
     CustomerRepo customerRepo;
     ActivityRepo activityRepo;
+    EmployeeRepo employeeRepo;
 
-    public ReservationService(ReservationRepo reservationRepo, CustomerRepo customerRepo, ActivityRepo activityRepo) {
+    public ReservationService(ReservationRepo reservationRepo, CustomerRepo customerRepo, ActivityRepo activityRepo, EmployeeRepo employeeRepo) {
         this.reservationRepo = reservationRepo;
         this.customerRepo = customerRepo;
         this.activityRepo = activityRepo;
+        this.employeeRepo = employeeRepo;
     }
 
     public List<ReservationResponse> getReservations(boolean includeAll, boolean includeAllCustomer, boolean includeAllActivities) {
@@ -55,6 +59,11 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid activity");
         }
 
+        Employee employee = employeeRepo.findByUsername(body.getUsername());
+        if(employee == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are no Employee on that activity");
+        }
+
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);
         reservation.setParticipants(body.getParticipants());
@@ -73,6 +82,11 @@ public class ReservationService {
         Customer customer = customerRepo.findById(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No customer with this USERNAME is found"));
         return reservationRepo.findByCustomer(customer);
+    }
+
+    public void deleteReservation(Customer customer) {
+        Reservation reservation = (Reservation) reservationRepo.findByCustomer(customer);
+        reservationRepo.delete(reservation);
     }
 
 }
