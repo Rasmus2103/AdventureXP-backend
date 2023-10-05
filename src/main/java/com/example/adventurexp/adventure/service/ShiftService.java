@@ -33,7 +33,6 @@ public class ShiftService {
 
     public List<ShiftResponse> getShifts(boolean includeAll) {
         List<Shift> shifts = shiftRepo.findAll();
-
         return shifts.stream().map(shift -> new ShiftResponse(shift, includeAll)).toList();
 
     }
