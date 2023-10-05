@@ -28,6 +28,7 @@ public class CustomerResponse {
     LocalDate created;
     @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
     LocalDate edited;
+    private double credit;
     List<ReservationResponse> reservations;
 
     public CustomerResponse(Customer customer, boolean includeAll){
@@ -37,6 +38,7 @@ public class CustomerResponse {
         this.lastName = customer.getLastName();
         this.phoneNumber = customer.getPhoneNumber();
         this.address = customer.getAddress();
+        this.credit = customer.getCredit();
         if(includeAll){
             this.created = customer.getCreated();
             this.edited = customer.getEdited();
