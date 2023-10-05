@@ -32,9 +32,12 @@ public class ArrangementService {
     //GET
 
     public ArrangementResponse getArrangementById (int id) {
-        Arrangement arrangement = arrangementRepo.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No arrangement with this ID is found"));
-        return new ArrangementResponse(arrangement, true, true, true);
+        try {
+            Arrangement arrangement = arrangementRepo.findArrangementById(id);
+            return new ArrangementResponse(arrangement, true, true, true);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No arrangement with this ID is found");
+        }
     }
 
     public ArrangementResponse getArrangementByName(String name) {
