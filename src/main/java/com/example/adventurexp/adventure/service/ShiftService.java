@@ -19,8 +19,9 @@ public class ShiftService {
     ShiftRepo shiftRepo;
     EmployeeRepo employeeRepo;
 
-    public ShiftService(ShiftRepo shiftRepo) {
+    public ShiftService(ShiftRepo shiftRepo, EmployeeRepo employeeRepo) {
         this.shiftRepo = shiftRepo;
+        this.employeeRepo = employeeRepo;
     }
 
     public List<ShiftResponse> getShifts(boolean includeAll) {
