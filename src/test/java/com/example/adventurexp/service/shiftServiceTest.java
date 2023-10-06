@@ -43,10 +43,10 @@ public class shiftServiceTest {
 
     @BeforeEach
     void setUp() {
-        e1 = employeeRepo.save(new Employee("f1", "l1", "p1", "a1", "u1", "p1", "e1" ));
-        e2 = employeeRepo.save(new Employee("f2", "l2", "p2", "a2", "u2", "p2", "e2" ));
-        a1 = activityRepo.save(new Activity("a1", 100, 1,1));
-        a2 = activityRepo.save(new Activity("a2", 200, 2,2));
+        e1 = employeeRepo.save(new Employee("f1", "l1", "p1", "a1", "u1", "p1", "e1"));
+        e2 = employeeRepo.save(new Employee("f2", "l2", "p2", "a2", "u2", "p2", "e2"));
+        a1 = activityRepo.save(new Activity("a1", 100, 1, 1));
+        a2 = activityRepo.save(new Activity("a2", 200, 2, 2));
         s1 = shiftRepo.save(new Shift(e1, a1, LocalDateTime.now(), LocalDateTime.now().plusDays(3)));
         s2 = shiftRepo.save(new Shift(e2, a2, LocalDateTime.now(), LocalDateTime.now().plusDays(3)));
         shiftService = new ShiftService(shiftRepo, employeeRepo, activityRepo);
@@ -64,10 +64,10 @@ public class shiftServiceTest {
         assertNotNull(endDate);
     }
 
-    /*
+
     @Test
-    void testFindByIdFound(){
-        ReservationResponse response = shiftService.findById(s1.getId());
+    void testFindByIdFound() {
+        ShiftResponse response = shiftService.findById(s1.getId());
         assertEquals(s1.getId(), response.getId());
     }
 
@@ -76,7 +76,7 @@ public class shiftServiceTest {
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> shiftService.findById(3));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-    */
+
 
     @Test
     void addShiftSucces() {
@@ -89,11 +89,25 @@ public class shiftServiceTest {
 
     @Test
     void addShiftStartDateBeforeToday() {
-        ShiftRequest s3 = new ShiftRequest(e1.getUsername(),a1.getId(), LocalDateTime.now().minusDays(2), LocalDateTime.now().plusDays(5));
+        ShiftRequest s3 = new ShiftRequest(e1.getUsername(), a1.getId(), LocalDateTime.now().minusDays(2), LocalDateTime.now().plusDays(5));
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> shiftService.addShift(s3, true));
         assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
     }
+    /*
+    @Test
+    void testEditShift() {
+        ShiftRequest s3 = new ShiftRequest(e1.getUsername(),a1.getId(), LocalDateTime.now().minusDays(2), LocalDateTime.now().plusDays(5));
+        ShiftResponse response = shiftService.editShift(s3, s1.getId());
+        assertEquals(s1.getId(), response.getId());
+    }
 
+    @Test
+    void testDeleteShift(){
+        shiftService.deleteShift(s1.getId());
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> shiftService.findById(s1.getId()));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+*/
 
 
 }
