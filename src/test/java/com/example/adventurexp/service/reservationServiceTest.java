@@ -55,7 +55,7 @@ public class reservationServiceTest {
 
     @Test
     void testGetReservationsAllDetails() {
-        List<ReservationResponse> reservationResponses = reservationService.getReservations(true, false, false);
+        List<ReservationResponse> reservationResponses = reservationService.getReservations(true, true, true);
         ActivityResponse activityResponse = reservationResponses.get(0).getActivity();
         CustomerResponse customerResponse = reservationResponses.get(0).getCustomer();
         LocalDateTime timeStart = reservationResponses.get(0).getReservationStart();
