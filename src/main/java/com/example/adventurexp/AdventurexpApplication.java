@@ -10,4 +10,5 @@ public class AdventurexpApplication {
         SpringApplication.run(AdventurexpApplication.class, args);
     }
 
+
 }

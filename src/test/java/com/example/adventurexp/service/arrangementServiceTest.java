@@ -11,10 +11,12 @@ import com.example.adventurexp.adventure.repository.ReservationRepo;
 import com.example.adventurexp.adventure.service.ArrangementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@DataJpaTest
 public class arrangementServiceTest {
 
     @Autowired
