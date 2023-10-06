@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ReservationRepo extends JpaRepository<Reservation,Integer> {
-    List<Reservation> findByCustomer(Customer customer);
+    Reservation findByCustomer(Customer customer);
 
     List<Reservation> findByActivity(Activity activity);
 

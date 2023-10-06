@@ -44,7 +44,7 @@ public class Reservation extends AdminDetails {
         activity.addReservation(this);
     }
 
-    private void calculateTotalPrice() {
+    public void calculateTotalPrice() {
         double pricePerHour = activity.getPrice();
         double durationInHours = Duration.between(reservationStart, reservationEnd).toHours();
         this.totalPrice = (int) (pricePerHour * durationInHours);

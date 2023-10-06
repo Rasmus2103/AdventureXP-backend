@@ -70,7 +70,7 @@ public class ReservationService {
         return new ReservationResponse(savedReservation, true, true, true);
     }
 
-    public List<Reservation> getReservationsByCustomer(String username) {
+    public Reservation getReservationsByCustomer(String username) {
         Customer customer = customerRepo.findById(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No customer with this USERNAME is found"));
         return reservationRepo.findByCustomer(customer);
