@@ -50,7 +50,7 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
         }
 
-        Activity activity = activityRepo.findById(body.getActivityId());
+        Activity activity = activityRepo.findAllById(body.getActivityId());
         if(activity == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid activity");
         }
@@ -73,6 +73,11 @@ public class ReservationService {
         Customer customer = customerRepo.findById(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No customer with this USERNAME is found"));
         return reservationRepo.findByCustomer(customer);
+    }
+
+    public void deleteReservation(Customer customer) {
+        Reservation reservation = (Reservation) reservationRepo.findByCustomer(customer);
+        reservationRepo.delete(reservation);
     }
 
 }

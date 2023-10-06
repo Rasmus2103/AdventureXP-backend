@@ -22,7 +22,7 @@ public class ActivityController {
 
     @GetMapping
     List<ActivityResponse> getActivities() {
-        return activityService.getActivities(false);
+        return activityService.getActivities(true);
     }
 
 

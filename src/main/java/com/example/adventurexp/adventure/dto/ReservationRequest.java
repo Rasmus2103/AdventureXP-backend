@@ -16,9 +16,9 @@ public class ReservationRequest {
     String username;
     int participants;
     int activityId;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime reservationStart;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime reservationEnd;
 
     public ReservationRequest(ReservationResponse r){
