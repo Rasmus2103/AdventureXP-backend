@@ -22,7 +22,8 @@ public class Shift extends AdminDetails {
     private int id;
     @ManyToOne()
     private Activity activity;
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn
     private Employee employee;
     @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime shiftStart;
