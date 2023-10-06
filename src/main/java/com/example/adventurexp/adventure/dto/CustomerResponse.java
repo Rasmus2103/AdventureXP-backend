@@ -42,7 +42,7 @@ public class CustomerResponse {
         if(includeAll){
             this.created = customer.getCreated();
             this.edited = customer.getEdited();
-            this.reservations = customer.getReservations().stream().map(c -> new ReservationResponse(c, true, true, true)).toList();
+            this.reservations = customer.getReservations().stream().map(c -> new ReservationResponse(c, true, false, true)).toList();
         }
     }
 

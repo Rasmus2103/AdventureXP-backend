@@ -102,6 +102,7 @@ public class SecurityConfig {
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).permitAll()
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).permitAll()
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/reservation/{id}")).permitAll()
 
             //Arrangements Endpoints
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements")).permitAll()

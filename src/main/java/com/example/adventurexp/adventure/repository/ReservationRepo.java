@@ -6,10 +6,11 @@ import com.example.adventurexp.adventure.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReservationRepo extends JpaRepository<Reservation,Integer> {
-    Reservation findByCustomer(Customer customer);
+    List<Reservation> findByCustomer(Customer customer);
+    Optional<Reservation> findById(int id);
 
     List<Reservation> findByActivity(Activity activity);
-
 }

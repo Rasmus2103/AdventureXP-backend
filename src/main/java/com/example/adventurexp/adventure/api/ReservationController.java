@@ -2,6 +2,7 @@ package com.example.adventurexp.adventure.api;
 
 import com.example.adventurexp.adventure.dto.ReservationRequest;
 import com.example.adventurexp.adventure.dto.ReservationResponse;
+import com.example.adventurexp.adventure.entity.Customer;
 import com.example.adventurexp.adventure.entity.Reservation;
 import com.example.adventurexp.adventure.service.ReservationService;
 import org.springframework.data.web.JsonPath;
@@ -27,13 +28,18 @@ public class ReservationController {
     }
 
     @GetMapping(path = "/{username}")
-    Reservation getReservationsByCustomer(@PathVariable String username) {
+    List<Reservation> getReservationsByCustomer(@PathVariable String username) {
         return reservationService.getReservationsByCustomer(username);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ReservationResponse makeReservation(@RequestBody ReservationRequest body) {
         return reservationService.makeReservation(body);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    void deleteReservation(@PathVariable int id) {
+        reservationService.deleteReservation(id);
     }
 
 }

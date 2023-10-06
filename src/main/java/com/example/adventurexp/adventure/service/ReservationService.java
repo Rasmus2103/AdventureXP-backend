@@ -13,9 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -56,12 +58,15 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid activity");
         }
 
+        double totalPrice = calculateTotalPrice(activity, body.getReservationStart(), body.getReservationEnd());
+
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);
         reservation.setParticipants(body.getParticipants());
         reservation.setActivity(activity);
         reservation.setReservationStart(body.getReservationStart());
         reservation.setReservationEnd(body.getReservationEnd());
+        reservation.setTotalPrice(totalPrice);
         reservation.setCreated(LocalDate.now());
         reservation.setEdited(LocalDate.now());
 
@@ -70,15 +75,22 @@ public class ReservationService {
         return new ReservationResponse(savedReservation, true, true, true);
     }
 
-    public Reservation getReservationsByCustomer(String username) {
+    public List<Reservation> getReservationsByCustomer(String username) {
         Customer customer = customerRepo.findById(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No customer with this USERNAME is found"));
         return reservationRepo.findByCustomer(customer);
     }
 
-    public void deleteReservation(Customer customer) {
-        Reservation reservation = (Reservation) reservationRepo.findByCustomer(customer);
+    public void deleteReservation(int id) {
+        Reservation reservation = reservationRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No reservation with this ID is found"));
         reservationRepo.delete(reservation);
+    }
+
+    private double calculateTotalPrice(Activity activity, LocalDateTime reservationStart, LocalDateTime reservationEnd) {
+        double pricePerHour = activity.getPrice();
+        double durationInHours = Duration.between(reservationStart, reservationEnd).toHours();
+        return pricePerHour * durationInHours;
     }
 
 }

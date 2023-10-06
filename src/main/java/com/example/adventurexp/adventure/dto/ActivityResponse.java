@@ -37,7 +37,7 @@ public class ActivityResponse {
             this.id = activity.getId();
             this.created = activity.getCreated();
             this.edited = activity.getEdited();
-            this.reservations = activity.getReservations().stream().map(r -> new ReservationResponse(r, true, true, true)).toList();
+            this.reservations = activity.getReservations().stream().map(r -> new ReservationResponse(r, true, true, false)).toList();
         }
     }
 
