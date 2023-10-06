@@ -32,9 +32,13 @@ public class ReservationResponse {
     LocalDate edited;
 
     public ReservationResponse(Reservation reservation, boolean includeAll, boolean includeAllCustomer, boolean includeAllActivities) {
-        this.customer = new CustomerResponse(reservation.getCustomer(), includeAllCustomer);
+        if(includeAllCustomer) {
+            this.customer = new CustomerResponse(reservation.getCustomer(), false);
+        }
         this.participants = reservation.getParticipants();
-        this.activity = new ActivityResponse(reservation.getActivity(), includeAllActivities);
+        if(includeAllActivities){
+            this.activity = new ActivityResponse(reservation.getActivity(), false);
+        }
         this.totalPrice = reservation.getTotalPrice();
         this.reservationStart = reservation.getReservationStart();
         this.reservationEnd = reservation.getReservationEnd();

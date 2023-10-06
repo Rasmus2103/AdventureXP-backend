@@ -76,4 +76,9 @@ public class ReservationService {
         return reservationRepo.findByCustomer(customer);
     }
 
+    public void deleteReservation(Customer customer) {
+        Reservation reservation = (Reservation) reservationRepo.findByCustomer(customer);
+        reservationRepo.delete(reservation);
+    }
+
 }

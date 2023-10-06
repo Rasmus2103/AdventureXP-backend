@@ -41,6 +41,7 @@ public class Reservation extends AdminDetails {
         this.reservationEnd = reservationEnd;
         calculateTotalPrice();
         customer.addReservation(this);
+        activity.addReservation(this);
     }
 
     private void calculateTotalPrice() {

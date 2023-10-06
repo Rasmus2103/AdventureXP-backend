@@ -20,7 +20,7 @@ public class ShiftController {
 
     @GetMapping
     List<ShiftResponse> getShifts() {
-        return shiftService.getShifts(false);
+        return shiftService.getShifts(true);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

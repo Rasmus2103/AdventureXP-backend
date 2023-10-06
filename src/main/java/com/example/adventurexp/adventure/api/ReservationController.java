@@ -23,7 +23,7 @@ public class ReservationController {
 
     @GetMapping
     List<ReservationResponse> getReservations(boolean includeAllCustomer, boolean includeAllActivities) {
-        return reservationService.getReservations(false, includeAllCustomer, includeAllActivities);
+        return reservationService.getReservations(true, includeAllCustomer, includeAllActivities);
     }
 
     @GetMapping(path = "/{username}")
@@ -35,4 +35,5 @@ public class ReservationController {
     ReservationResponse makeReservation(@RequestBody ReservationRequest body) {
         return reservationService.makeReservation(body);
     }
+
 }
