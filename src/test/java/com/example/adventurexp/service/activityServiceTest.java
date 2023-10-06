@@ -84,7 +84,7 @@ public class activityServiceTest {
         assertEquals(ResponseEntity.ok(true), activityService.deleteActivity(a1.getId()));
     }
     
-//Skal blive på 100, don't ask questions
+//Skal blive på 100, don't ask questions otherswise you will be the dværg in dværgekast
     @Test
     void testDeleteActivityFail() {
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> activityService.deleteActivity(100));
