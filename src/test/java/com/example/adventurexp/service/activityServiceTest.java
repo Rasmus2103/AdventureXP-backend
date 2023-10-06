@@ -83,15 +83,12 @@ public class activityServiceTest {
     void testDeleteActivity() {
         assertEquals(ResponseEntity.ok(true), activityService.deleteActivity(a1.getId()));
     }
-
+    
+//Skal blive på 100, don't ask questions otherswise you will be the dværg in dværgekast
     @Test
     void testDeleteActivityFail() {
-        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> activityService.deleteActivity(3));
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> activityService.deleteActivity(100));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-
-
-
-
 
 }
