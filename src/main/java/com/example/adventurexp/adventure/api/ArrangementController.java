@@ -28,11 +28,6 @@ public class ArrangementController {
         return arrangementService.getAllArrangements(true, false, false);
     }
 
-    @GetMapping("name/{arrangementName}")
-    public ArrangementResponse getArrangementByName(@PathVariable String arrangementName) {
-        return arrangementService.getArrangementByName(arrangementName);
-    }
-
     @PostMapping("/create")
     public ArrangementResponse createArrangement(@RequestBody ArrangementRequest body) {
         return arrangementService.createArrangement(body);

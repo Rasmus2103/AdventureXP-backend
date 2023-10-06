@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArrangementRepo extends JpaRepository<Arrangement,Integer> {
 
-    Arrangement findArrangementByName(String arrangementName);
     Arrangement findArrangementById(int id);
 }

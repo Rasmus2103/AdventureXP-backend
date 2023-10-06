@@ -40,15 +40,6 @@ public class ArrangementService {
         }
     }
 
-    public ArrangementResponse getArrangementByName(String name) {
-      try {
-            Arrangement arrangement = arrangementRepo.findArrangementByName(name);
-            return new ArrangementResponse(arrangement, true, true, true);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No arrangement with this NAME is found");
-        }
-    }
-
     public List<ArrangementResponse> getAllArrangements(boolean includeAll, boolean includeAllCustomer, boolean includeAllActivities) {
         List<Arrangement> arrangements = arrangementRepo.findAll();
 
