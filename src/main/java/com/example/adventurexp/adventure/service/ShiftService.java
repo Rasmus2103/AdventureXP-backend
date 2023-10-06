@@ -10,6 +10,7 @@ import com.example.adventurexp.adventure.repository.ActivityRepo;
 import com.example.adventurexp.adventure.repository.EmployeeRepo;
 import com.example.adventurexp.adventure.repository.ShiftRepo;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -53,6 +54,29 @@ public class ShiftService {
         shift = shiftRepo.save(shift);
         return new ShiftResponse(shift, includeAll);
     }
+
+    public ResponseEntity<Boolean> editShift(ShiftRequest body, int id) {
+        Shift shift = getShiftById(id);
+
+        Employee employee = employeeRepo.findByUsername(body.getEmployeeUsername());
+        Activity activity = activityRepo.findById(body.getActivityId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid activity ID"));
+
+        shift.setEmployee(employee);
+        shift.setActivity(activity);
+        shift.setShiftStart(body.getShiftStart());
+        shift.setShiftEnd(body.getShiftEnd());
+
+        shiftRepo.save(shift);
+
+        return ResponseEntity.ok(true);
+    }
+
+    public void deleteShift(int id) {
+        Shift shift = getShiftById(id);
+        shiftRepo.delete(shift);
+    }
+
 
     public ShiftResponse findById(int id) {
         Shift shift = getShiftById(id);

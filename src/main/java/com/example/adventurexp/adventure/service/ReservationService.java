@@ -10,6 +10,7 @@ import com.example.adventurexp.adventure.repository.CustomerRepo;
 import com.example.adventurexp.adventure.repository.ReservationRepo;
 import com.example.adventurexp.adventure.repository.ShiftRepo;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,7 +18,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -74,6 +74,34 @@ public class ReservationService {
 
         return new ReservationResponse(savedReservation, true, true, true);
     }
+
+
+    public ResponseEntity<Boolean> editReservation(ReservationRequest body, int id) {
+        Reservation reservation = reservationRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No reservation with this ID is found"));
+
+        Customer customer = customerRepo.findByUsername(body.getUsername());
+        if (customer == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid customer username");
+        }
+
+        Activity activity = activityRepo.findById(body.getActivityId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid activity ID"));
+
+        double totalPrice = calculateTotalPrice(activity, body.getReservationStart(), body.getReservationEnd());
+
+        reservation.setCustomer(customer);
+        reservation.setParticipants(body.getParticipants());
+        reservation.setActivity(activity);
+        reservation.setTotalPrice(totalPrice);
+        reservation.setReservationStart(body.getReservationStart());
+        reservation.setReservationEnd(body.getReservationEnd());
+
+        reservationRepo.save(reservation);
+
+        return ResponseEntity.ok(true);
+    }
+
 
     public List<Reservation> getReservationsByCustomer(String username) {
         Customer customer = customerRepo.findById(username)

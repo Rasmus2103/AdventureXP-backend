@@ -7,6 +7,7 @@ import com.example.adventurexp.adventure.entity.Reservation;
 import com.example.adventurexp.adventure.service.ReservationService;
 import org.springframework.data.web.JsonPath;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,11 @@ public class ReservationController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ReservationResponse makeReservation(@RequestBody ReservationRequest body) {
         return reservationService.makeReservation(body);
+    }
+
+    @PutMapping(path = "/{id}")
+    ResponseEntity<Boolean> editReservation(@RequestBody ReservationRequest body, int id) {
+        return reservationService.editReservation(body, id);
     }
 
     @DeleteMapping(path = "/{id}")
