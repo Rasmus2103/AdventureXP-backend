@@ -80,7 +80,7 @@ public class DataSetup implements ApplicationRunner {
                         String lastName = lastNames[random.nextInt(lastNames.length)];
                         String phoneNumber = phonePrefixes[random.nextInt(phonePrefixes.length)] + String.format("%04d", random.nextInt(10000));
                         String address = addresses[random.nextInt(addresses.length)];
-                        String username = firstName.toLowerCase() + "." + lastName.toLowerCase() + i;
+                        String username = firstName.toLowerCase() + "." + lastName.toLowerCase() + i + random.nextInt(100);
                         String password = "password" + i;
                         String email = username + "@example.com";
 
@@ -105,7 +105,7 @@ public class DataSetup implements ApplicationRunner {
                         String lastName = lastNames[random.nextInt(lastNames.length)];
                         String phoneNumber = phonePrefixes[random.nextInt(phonePrefixes.length)] + String.format("%04d", random.nextInt(10000));
                         String address = addresses[random.nextInt(addresses.length)];
-                        String username = firstName.toLowerCase() + "." + lastName.toLowerCase() + i;
+                        String username = firstName.toLowerCase() + "." + lastName.toLowerCase() + i + random.nextInt(100);
                         String password = "password" + i;
                         String email = username + "@example.com";
 
@@ -121,7 +121,7 @@ public class DataSetup implements ApplicationRunner {
                 List<Activity> activities = new ArrayList<>();
                 Random random = new Random();
 
-                String[] activityNames = {"go-kart", "minigolf", "paintball", "zipline", "rock climbing", "bungee jumping", "horseback riding", "archery", "sailing", "surfing"};
+                String[] activityNames = {"go-kart", "minigolf", "paintball", "zipline", "rock climbing", "bungee jumping", "horseback riding", "archery", "sailing", "surfing", "dværge-kast"};
                 double[] prices = {25.0, 15.0, 30.0, 40.0, 50.0, 60.0, 35.0, 20.0, 45.0, 55.0};
 
                 for (int i = 0; i < numberOfActivities; i++) {
@@ -153,7 +153,6 @@ public class DataSetup implements ApplicationRunner {
 
                         reservations.add(reservation);
                 }
-
                 return reservations;
         }
 
@@ -166,9 +165,9 @@ public class DataSetup implements ApplicationRunner {
                         int participants = random.nextInt(50) + 1; // Random number of participants between 1 and 10
                         String[] names = {"Birthday party", "Company outing", "Bachelor party", "Bachelorette party", "Family reunion", "Wedding"};
                         String name = names[random.nextInt(names.length)];
-                        LocalDateTime reservationStart = LocalDateTime.of(2023, 11, 1, 0, 0).plusDays(random.nextInt(30)).plusHours(random.nextInt(24));
-                        LocalDateTime reservationEnd = reservationStart.plusHours(-1).plusHours(random.nextInt(5) + 1);
-                        Arrangement arrangement = new Arrangement(customer, participants, name, reservationStart, reservationEnd);
+                        LocalDateTime arrangementStart = LocalDateTime.of(2023, 11, 1, 0, 0).plusDays(random.nextInt(30)).plusHours(random.nextInt(24));
+                        LocalDateTime arrangementEnd = arrangementStart.plusHours(-1).plusHours(random.nextInt(5) + 1);
+                        Arrangement arrangement = new Arrangement(customer, participants, name, arrangementStart, arrangementEnd);
 
                         int numReservations = random.nextInt(reservations.size()) + 1; // Random number of activities (1 to the total number of activities)
                         for (int j = 0; j < numReservations; j++) {

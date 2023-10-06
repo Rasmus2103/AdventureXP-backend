@@ -45,7 +45,7 @@ public class Arrangement extends AdminDetails {
         this.arrangementStart = arrangementStart;
         this.arrangementEnd = arrangementEnd;
         calculateAggregatePrice();
-        calculateAggregateDuration();
+        //calculateAggregateDuration();
     }
 
     public void addReservation(Reservation reservation){
@@ -62,7 +62,7 @@ public class Arrangement extends AdminDetails {
         }
         this.aggregatePrice = aggregatePrice;
     }
-
+/*
     private void calculateAggregateDuration() {
         LocalDateTime arrangementStart = reservations.stream()
                 .map(Reservation::getReservationStart)
@@ -76,5 +76,5 @@ public class Arrangement extends AdminDetails {
         this.arrangementStart = arrangementStart;
         this.arrangementEnd = arrangementEnd;
     }
-
+*/
 }
