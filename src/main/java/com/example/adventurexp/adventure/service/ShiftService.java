@@ -82,7 +82,6 @@ public class ShiftService {
         shiftRepo.delete(shift);
     }
 
-
     public ShiftResponse findById(int id) {
         Shift shift = getShiftById(id);
         return new ShiftResponse(shift, true);

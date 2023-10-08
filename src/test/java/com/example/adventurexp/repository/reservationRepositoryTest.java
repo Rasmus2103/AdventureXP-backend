@@ -8,10 +8,14 @@ import com.example.adventurexp.adventure.repository.CustomerRepo;
 import com.example.adventurexp.adventure.repository.ReservationRepo;
 import com.example.adventurexp.adventure.repository.ShiftRepo;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 public class reservationRepositoryTest {
@@ -36,7 +40,6 @@ public class reservationRepositoryTest {
     void setUp() {
         if (!isInitialized) {
             a1 = activityRepo.save(new Activity("a1", 100, 1,1));
-            a1.setId(1);
             a2 = activityRepo.save(new Activity("a2", 200, 2,2));
             c1 = customerRepo.save(new Customer("f1", "l1", "p1", "a1", "u1", "p1", "e1" ));
             c2 = customerRepo.save(new Customer("f2", "l2", "p2", "a2", "u2", "p2", "e2" ));
@@ -45,4 +48,23 @@ public class reservationRepositoryTest {
             isInitialized = true;
         }
     }
+
+    @Test
+    void findByCustomer() {
+        assertEquals(1, reservationRepo.findByCustomer(c1).size());
+    }
+
+    @Test
+    void findById() {
+        Reservation reservation = reservationRepo.findById(r1.getId()).get();
+        assertEquals(r1.getId(), reservation.getId());
+    }
+
+    @Test
+    void findAllByActivity() {
+        List<Reservation> reservations = reservationRepo.findAllByActivity(a1);
+        assertEquals(1, reservations.size());
+    }
+
+
 }

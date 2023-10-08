@@ -11,12 +11,12 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/costumer")
-public class CostumerController {
+@RequestMapping("api/customer")
+public class CustomerController {
 
     CustomerService customerService;
 
-    public CostumerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
@@ -44,4 +44,10 @@ public class CostumerController {
     void deleteCustomer(@PathVariable String username) {
         customerService.deleteCustomer(username);
     }
+
+    @PatchMapping("/addcredit/{username}/{value}")
+    ResponseEntity<Boolean> addCredit(@PathVariable String username, @PathVariable int value) {
+        return customerService.addCredits(username, value);
+    }
+
 }

@@ -75,17 +75,19 @@ public class ReservationService {
         }
         // check om der er en medarbejder på arbejde i det tidsrum
         List<Shift> shifts = shiftRepo.findAllByActivity(activity);
-        if (!shifts.isEmpty()){
-            for (Shift s : shifts) {
-                if (body.getReservationStart().isBefore(s.getShiftEnd()) &&
-                        body.getReservationEnd().isAfter(s.getShiftStart()) ||
-                        body.getReservationStart().isEqual(s.getShiftStart()) ||
-                        body.getReservationEnd().isEqual(s.getShiftEnd())
-                ) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No employee available in this period");
-                }
+        boolean employeeAvailable = false;
+        for (Shift s : shifts) {
+            if (body.getReservationStart().isBefore(s.getShiftEnd()) && body.getReservationEnd().isAfter(s.getShiftStart())) {
+                employeeAvailable = true;
+                break;
             }
         }
+        if (!employeeAvailable) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No employee available in this period");
+        }
+
+
+        //TODO check om customer er ældre end activity minAge
 
         //Tjekker at datoen ikke går over til næste dag
         if (!body.getReservationStart().toLocalDate().equals(body.getReservationEnd().toLocalDate())) {
@@ -93,6 +95,10 @@ public class ReservationService {
         }
 
         double totalPrice = calculateTotalPrice(activity, body.getReservationStart(), body.getReservationEnd());
+
+        // TODO "betalingen" virker ikke
+        customer.setCredit(customer.getCredit() - totalPrice);
+        customerRepo.save(customer);
 
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);

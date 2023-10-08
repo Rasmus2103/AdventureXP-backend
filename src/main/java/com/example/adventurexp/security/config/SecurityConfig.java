@@ -37,133 +37,135 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 public class SecurityConfig {
 
-  //Remove default value below BEFORE deployment
-  @Value("${app.secret-key}")
-  private String tokenSecret;
+    //Remove default value below BEFORE deployment
+    @Value("${app.secret-key}")
+    private String tokenSecret;
 
-  @Autowired
-  CorsConfigurationSource corsConfigurationSource;
+    @Autowired
+    CorsConfigurationSource corsConfigurationSource;
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
-    MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
-    http
-            .cors(Customizer.withDefaults()) //Will use the CorsConfigurationSource bean declared in CorsConfig.java
-            .csrf(csrf -> csrf.disable())  //We can disable csrf, since we are using token based authentication, not cookie based
-            .httpBasic(Customizer.withDefaults())
-            .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .exceptionHandling((exceptions) -> exceptions
-                            .authenticationEntryPoint(new CustomOAuth2AuthenticationEntryPoint())
-            )
-            .oauth2ResourceServer((oauth2ResourceServer) ->
-                    oauth2ResourceServer
-                            .jwt((jwt) -> jwt.decoder(jwtDecoder())
-                                    .jwtAuthenticationConverter(authenticationConverter())
-                            )
-                            .authenticationEntryPoint(new CustomOAuth2AuthenticationEntryPoint()));
-    http.authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/auth/login")).permitAll()
-            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/user-with-role")).permitAll() //Clients can create a user for themself
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
+        http
+                .cors(Customizer.withDefaults()) //Will use the CorsConfigurationSource bean declared in CorsConfig.java
+                .csrf(csrf -> csrf.disable())  //We can disable csrf, since we are using token based authentication, not cookie based
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling((exceptions) -> exceptions
+                        .authenticationEntryPoint(new CustomOAuth2AuthenticationEntryPoint())
+                )
+                .oauth2ResourceServer((oauth2ResourceServer) ->
+                        oauth2ResourceServer
+                                .jwt((jwt) -> jwt.decoder(jwtDecoder())
+                                        .jwtAuthenticationConverter(authenticationConverter())
+                                )
+                                .authenticationEntryPoint(new CustomOAuth2AuthenticationEntryPoint()));
+        http.authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/auth/login")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/user-with-role")).permitAll() //Clients can create a user for themself
 
-            //This is for demo purposes only, and should be removed for a real system
-            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/demo/anonymous")).permitAll()
+                        //This is for demo purposes only, and should be removed for a real system
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/demo/anonymous")).permitAll()
 
-            //Allow index.html and everything else on root level. So make sure to put ALL your endpoints under /api
-            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET,"/*")).permitAll()
+                        //Allow index.html and everything else on root level. So make sure to put ALL your endpoints under /api
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/*")).permitAll()
 
-            .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
 
-            //Use this to completely disable security (Will not work if endpoints has been marked with @PreAuthorize)
-            //.requestMatchers("/", "/**").permitAll());
-            //.requestMatchers(mvcMatcherBuilder.pattern("/**")).permitAll()
+                        //Use this to completely disable security (Will not work if endpoints has been marked with @PreAuthorize)
+                        //.requestMatchers("/", "/**").permitAll());
+                        //.requestMatchers(mvcMatcherBuilder.pattern("/**")).permitAll()
 
-            //This is for demo purposes only, and should be removed for a real system
-            //.requestMatchers(HttpMethod.GET, "/api/demouser/user-only").hasAuthority("USER")
-              //.requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/cars/admin")).hasAuthority("ADMIN")
-            //Employees Endpoints
-            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee")).permitAll()
-            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/{username}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/employee")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/employee/{username}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/employee/{username}")).permitAll()
+                        //This is for demo purposes only, and should be removed for a real system
+                        //.requestMatchers(HttpMethod.GET, "/api/demouser/user-only").hasAuthority("USER")
+                        //.requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/cars/admin")).hasAuthority("ADMIN")
+                        //Employees Endpoints
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/employee")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/employee/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/employee/{username}")).permitAll()
 
-            //Shift Endpoints
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "api/shift")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "api/shift/{id}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "api/shift/{id}")).permitAll()
+                        //Shift Endpoints
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift/{id}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "api/shift")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "api/shift{id}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "api/shift{id}")).permitAll()
 
-            //Customer Endpoints
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/costumer")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/costumer/{username}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/costumer")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/costumer/{username}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/costumer/{username}")).permitAll()
+                        //Customer Endpoints
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/customer")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/customer/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/customer/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PATCH, "/api/customer/addcredit/{username}/{value}")).permitAll()
 
-            //Reservations Endpoints
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/reservation/{id}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/reservation/{id}")).permitAll()
+                        //Reservations Endpoints
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/reservation/{id}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/reservation/{id}")).permitAll()
 
-            //Arrangements Endpoints
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/{id}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/name/{arrangementName}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/arrangements/create")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/arrangements/edit/{id}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/arrangements/delete/{id}")).permitAll()
+                        //Arrangements Endpoints
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/{id}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/arrangements")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/arrangements/{id}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/arrangements/{id}")).permitAll()
 
-            //Activity Endpoints
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity/{id}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/activity")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/activity/{id}")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/activity/{id}")).permitAll()
-            );
+                        //Activity Endpoints
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity/{id}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/activity/{id}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/activity")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/activity/{id}")).permitAll()
+//
+        );
 
 
-    return http.build();
-  }
+        return http.build();
+    }
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Bean
-  public JwtAuthenticationConverter authenticationConverter() {
-    JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-    jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-    jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
+    @Bean
+    public JwtAuthenticationConverter authenticationConverter() {
+        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
 
-    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
-    return jwtAuthenticationConverter;
-  }
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+        return jwtAuthenticationConverter;
+    }
 
-  @Bean
-  public SecretKey secretKey() {
-    return new SecretKeySpec(tokenSecret.getBytes(), "HmacSHA256");
-  }
+    @Bean
+    public SecretKey secretKey() {
+        return new SecretKeySpec(tokenSecret.getBytes(), "HmacSHA256");
+    }
 
-  @Bean
-  public JwtDecoder jwtDecoder() {
-    return NimbusJwtDecoder.withSecretKey(secretKey()).build();
-  }
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withSecretKey(secretKey()).build();
+    }
 
-  @Bean
-  public JwtEncoder jwtEncoder() {
-    return new NimbusJwtEncoder(
-            new ImmutableSecret<SecurityContext>(secretKey())
-    );
-  }
+    @Bean
+    public JwtEncoder jwtEncoder() {
+        return new NimbusJwtEncoder(
+                new ImmutableSecret<SecurityContext>(secretKey())
+        );
+    }
 
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-          throws Exception {
-    return authenticationConfiguration.getAuthenticationManager();
-  }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
 }

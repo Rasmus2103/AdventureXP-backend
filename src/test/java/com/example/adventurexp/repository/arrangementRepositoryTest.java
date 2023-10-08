@@ -43,7 +43,6 @@ public class arrangementRepositoryTest {
             c1 = customerRepo.save(new Customer("f1", "l1", "p1", "a1", "u1", "p1", "e1"));
             c2 = customerRepo.save(new Customer("f2", "l2", "p2", "a2", "u2", "p2", "e2"));
             activity1 = activityRepo.save(new Activity("a1", 100, 1, 1));
-            activity1.setId(1);
             activity2 = activityRepo.save(new Activity("a2", 200, 2, 2));
             r1 = reservationRepo.save(new Reservation(c1, 8, activity1, LocalDateTime.now(), LocalDateTime.now().plusHours(1)));
             r2 = reservationRepo.save(new Reservation(c2, 3, activity2, LocalDateTime.now(), LocalDateTime.now().plusHours(1)));
@@ -54,13 +53,13 @@ public class arrangementRepositoryTest {
             isInitialized = true;
         }
     }
-/*
+
     @Test
     void findArrangementById() {
-        Arrangement a1 = arrangementRepo.findArrangementById(1);
-        assertEquals(1, a1.getId());
+        Arrangement a1 = arrangementRepo.findArrangementById(arrangement1.getId());
+        assertEquals(arrangement1.getId(), a1.getId());
     }
-*/
+
     @Test
     void findArrangementByIdFail() {
         Arrangement a1 = arrangementRepo.findArrangementById(1);

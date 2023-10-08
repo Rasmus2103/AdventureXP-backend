@@ -20,26 +20,25 @@ public class ArrangementController {
 
     @GetMapping("/{id}")
     public ArrangementResponse getArrangementById(@PathVariable int id) {
-        return arrangementService.getArrangementById(id);
+        return arrangementService.findById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public List<ArrangementResponse> getAllArrangements() {
         return arrangementService.getAllArrangements(true, false, false);
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public ArrangementResponse createArrangement(@RequestBody ArrangementRequest body) {
         return arrangementService.createArrangement(body);
     }
 
-    @PutMapping("/edit/{id}")
-    public ArrangementResponse editArrangement(@PathVariable int id, @RequestBody ArrangementRequest body,
-                                               @RequestBody List<Integer> reservationIds) {
-        return arrangementService.editArrangement(id, body, reservationIds);
+    @PutMapping("/{id}")
+    public ArrangementResponse editArrangement(@PathVariable int id, @RequestBody ArrangementRequest body) {
+        return arrangementService.editArrangement(id, body);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteArrangement(@PathVariable int id) {
         arrangementService.deleteArrangement(id);
     }

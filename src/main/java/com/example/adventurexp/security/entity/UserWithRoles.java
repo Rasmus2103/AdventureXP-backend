@@ -53,7 +53,7 @@ public class UserWithRoles implements UserDetails {
 
   private boolean enabled = true;
 
-  @CreationTimestamp
+  @UpdateTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
   private LocalDate created;
 

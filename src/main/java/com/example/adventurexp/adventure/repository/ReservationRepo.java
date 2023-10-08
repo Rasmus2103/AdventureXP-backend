@@ -13,8 +13,6 @@ public interface ReservationRepo extends JpaRepository<Reservation,Integer> {
     List<ReservationResponse> findByCustomer(Customer customer);
     Optional<Reservation> findById(int id);
 
-    List<Reservation> findByActivity(Activity activity);
-
     List<Reservation> findAllByActivity(Activity activity);
 
 }

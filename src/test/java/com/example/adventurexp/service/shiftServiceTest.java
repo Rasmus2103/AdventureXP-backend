@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -79,13 +80,18 @@ public class shiftServiceTest {
 
 
     @Test
+    void addShiftFailEmployeeAlreadyHaveAShiftInThisTime() {
+        ResponseStatusException exception = assertThrows( ResponseStatusException.class, () -> shiftService.addShift(new ShiftRequest(e1.getUsername(), a1.getId(), LocalDateTime.now(), LocalDateTime.now().plusDays(3)), true));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+    }
+
+    @Test
     void addShiftSucces() {
-        ShiftRequest s3 = new ShiftRequest(e1.getUsername(), a1.getId(), LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(5));
+        ShiftRequest s3 = new ShiftRequest(e1.getUsername(), a1.getId(), LocalDateTime.now().plusDays(20), LocalDateTime.now().plusDays(50));
         ShiftResponse response = shiftService.addShift(s3, true);
         assertEquals(e1.getUsername(), response.getEmployeeResponse().getUsername());
 
     }
-
 
     @Test
     void addShiftStartDateBeforeToday() {
@@ -93,21 +99,20 @@ public class shiftServiceTest {
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> shiftService.addShift(s3, true));
         assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
     }
-    /*
+
     @Test
     void testEditShift() {
-        ShiftRequest s3 = new ShiftRequest(e1.getUsername(),a1.getId(), LocalDateTime.now().minusDays(2), LocalDateTime.now().plusDays(5));
-        ShiftResponse response = shiftService.editShift(s3, s1.getId());
-        assertEquals(s1.getId(), response.getId());
+        assertEquals(ResponseEntity.ok(true), shiftService.editShift(new ShiftRequest(e1.getUsername(),a1.getId(), LocalDateTime.now().minusDays(3), LocalDateTime.now().plusDays(6)), s1.getId()));
+
     }
 
     @Test
-    void testDeleteShift(){
+    void testDeleteShiftSucces(){
         shiftService.deleteShift(s1.getId());
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> shiftService.findById(s1.getId()));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-*/
+
 
 
 }
