@@ -7,10 +7,14 @@ import com.example.adventurexp.adventure.repository.ActivityRepo;
 import com.example.adventurexp.adventure.repository.EmployeeRepo;
 import com.example.adventurexp.adventure.repository.ShiftRepo;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class shiftRepositoryTest {
@@ -41,5 +45,17 @@ public class shiftRepositoryTest {
             s2 = shiftRepo.save(new Shift(e2, a2, LocalDateTime.now(), LocalDateTime.now().plusDays(3)));
             isInitialized = true;
         }
+    }
+
+    @Test
+    void findAllByActivity(){
+        List<Shift> shifts = shiftRepo.findAllByActivity(a1);
+        assertEquals( 1, shifts.size());
+    }
+
+    @Test
+    void findAllByActivityFail(){
+        List<Shift> shifts = shiftRepo.findAllByActivity(a1);
+        assertNotEquals(0, shifts.size());
     }
 }
