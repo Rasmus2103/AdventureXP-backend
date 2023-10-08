@@ -1,5 +1,6 @@
 package com.example.adventurexp.adventure.repository;
 
+import com.example.adventurexp.adventure.dto.ReservationResponse;
 import com.example.adventurexp.adventure.entity.Activity;
 import com.example.adventurexp.adventure.entity.Customer;
 import com.example.adventurexp.adventure.entity.Reservation;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReservationRepo extends JpaRepository<Reservation,Integer> {
-    List<Reservation> findByCustomer(Customer customer);
+    List<ReservationResponse> findByCustomer(Customer customer);
     Optional<Reservation> findById(int id);
 
     List<Reservation> findByActivity(Activity activity);

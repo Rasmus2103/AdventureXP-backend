@@ -29,7 +29,7 @@ public class ReservationController {
     }
 
     @GetMapping(path = "/{username}")
-    List<Reservation> getReservationsByCustomer(@PathVariable String username) {
+    List<ReservationResponse> getReservationsByCustomer(@PathVariable String username) {
         return reservationService.getReservationsByCustomer(username);
     }
 
@@ -39,7 +39,7 @@ public class ReservationController {
     }
 
     @PutMapping(path = "/{id}")
-    ResponseEntity<Boolean> editReservation(@RequestBody ReservationRequest body, int id) {
+    ResponseEntity<Boolean> editReservation(@RequestBody ReservationRequest body, @PathVariable int id) {
         return reservationService.editReservation(body, id);
     }
 

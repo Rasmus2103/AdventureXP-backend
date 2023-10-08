@@ -87,6 +87,11 @@ public class ReservationService {
             }
         }
 
+        //Tjekker at datoen ikke går over til næste dag
+        if (!body.getReservationStart().toLocalDate().equals(body.getReservationEnd().toLocalDate())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reservations cannot span to the next day");
+        }
+
         double totalPrice = calculateTotalPrice(activity, body.getReservationStart(), body.getReservationEnd());
 
         Reservation reservation = new Reservation();
@@ -131,7 +136,7 @@ public class ReservationService {
         return ResponseEntity.ok(true);
     }
 
-    public List<Reservation> getReservationsByCustomer(String username) {
+    public List<ReservationResponse> getReservationsByCustomer(String username) {
         Customer customer = customerRepo.findById(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No customer with this USERNAME is found"));
         return reservationRepo.findByCustomer(customer);

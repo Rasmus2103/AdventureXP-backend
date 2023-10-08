@@ -104,6 +104,7 @@ public class SecurityConfig {
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).permitAll()
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).permitAll()
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/reservation/{id}")).permitAll()
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/reservation/{id}")).permitAll()
 
             //Arrangements Endpoints
@@ -116,7 +117,10 @@ public class SecurityConfig {
 
             //Activity Endpoints
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity")).permitAll()
-//
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity/{id}")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/activity")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/activity/{id}")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/activity/{id}")).permitAll()
             );
 
 

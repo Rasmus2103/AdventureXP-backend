@@ -1,11 +1,12 @@
 package com.example.adventurexp.adventure.api;
 
+import com.example.adventurexp.adventure.dto.ActivityRequest;
 import com.example.adventurexp.adventure.dto.ActivityResponse;
 import com.example.adventurexp.adventure.service.ActivityService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.web.JsonPath;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +26,24 @@ public class ActivityController {
         return activityService.getActivities(true);
     }
 
+    @GetMapping(path = "/{id}")
+    ActivityResponse findById(@PathVariable int id) {
+        return activityService.findById(id);
+    }
 
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    ActivityResponse addActivity(@RequestBody ActivityRequest body) {
+        return activityService.addActivity(body);
+    }
+
+    @PutMapping(path = "/{id}")
+    ResponseEntity<Boolean> editActivity(@RequestBody ActivityRequest body, @PathVariable int id) {
+        return activityService.editActivity(body, id);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<Boolean> deleteAcitivity(@PathVariable int id) {
+        return activityService.deleteActivity(id);
+    }
 
 }
