@@ -100,6 +100,7 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/customer")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/customer/{username}")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/customer/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PATCH, "/api/customer/addcredit/{username}/{value}")).permitAll()
 
                         //Reservations Endpoints
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).permitAll()

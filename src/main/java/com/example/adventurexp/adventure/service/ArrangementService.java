@@ -75,7 +75,7 @@ public class ArrangementService {
 
         Arrangement savedArrangement = arrangementRepo.save(arrangement);
 
-        return new ArrangementResponse(savedArrangement, true, true, true);
+        return new ArrangementResponse(savedArrangement, true, false, true);
     }
 
     //PUT
@@ -93,13 +93,13 @@ public class ArrangementService {
         }
 
         Arrangement editedArrangement = arrangementRepo.save(arrangement);
-        return new ArrangementResponse(editedArrangement, true, true, true);
+        return new ArrangementResponse(editedArrangement, true, false, true);
     }
 
     public ArrangementResponse findById(int id) {
         Arrangement arrangement = arrangementRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No arrangement with this ID is found"));
-        return new ArrangementResponse(arrangement, true, true, true);
+        return new ArrangementResponse(arrangement, true, false, true);
     }
 
     //DELETE

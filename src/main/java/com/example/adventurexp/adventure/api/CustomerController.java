@@ -44,4 +44,10 @@ public class CustomerController {
     void deleteCustomer(@PathVariable String username) {
         customerService.deleteCustomer(username);
     }
+
+    @PatchMapping("/addcredit/{username}/{value}")
+    ResponseEntity<Boolean> addCredit(@PathVariable String username, @PathVariable int value) {
+        return customerService.addCredits(username, value);
+    }
+
 }
