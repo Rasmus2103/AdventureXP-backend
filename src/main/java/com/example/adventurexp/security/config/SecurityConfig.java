@@ -90,7 +90,8 @@ public class SecurityConfig {
             //Shift Endpoints
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift")).permitAll()
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "api/shift")).permitAll()
-                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "api/shift{id}")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "api/shift/{id}")).permitAll()
+                    .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "api/shift/{id}")).permitAll()
 
             //Customer Endpoints
                     .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/costumer")).permitAll()
