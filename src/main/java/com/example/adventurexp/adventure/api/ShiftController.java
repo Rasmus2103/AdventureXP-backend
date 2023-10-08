@@ -24,6 +24,11 @@ public class ShiftController {
         return shiftService.getShifts(true);
     }
 
+    @GetMapping("/{id}")
+    ShiftResponse getShiftById(@PathVariable int id) {
+        return shiftService.findById(id);
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ShiftResponse addShift(@RequestBody ShiftRequest body, boolean includeAll) {
         return shiftService.addShift(body, includeAll);

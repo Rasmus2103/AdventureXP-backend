@@ -25,49 +25,32 @@ public class ArrangementService {
     CustomerRepo customerRepo;
     ActivityRepo activityRepo;
 
-    public ArrangementService(ArrangementRepo arrangementRepo, ReservationRepo reservationRepo, CustomerRepo customerRepo,  ActivityRepo activityRepo) {
+    public ArrangementService(ArrangementRepo arrangementRepo, ReservationRepo reservationRepo, CustomerRepo customerRepo, ActivityRepo activityRepo) {
         this.arrangementRepo = arrangementRepo;
         this.reservationRepo = reservationRepo;
         this.customerRepo = customerRepo;
         this.activityRepo = activityRepo;
     }
 
-    //GET
-
-    public ArrangementResponse getArrangementById (int id) {
-        try {
-            Arrangement arrangement = arrangementRepo.findArrangementById(id);
-            return new ArrangementResponse(arrangement, true, true, true);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No arrangement with this ID is found");
-        }
-    }
-
     public List<ArrangementResponse> getAllArrangements(boolean includeAll, boolean includeAllCustomer, boolean includeAllActivities) {
         List<Arrangement> arrangements = arrangementRepo.findAll();
 
-        List<ArrangementResponse> response = arrangements.stream().map(arrangement -> new ArrangementResponse(arrangement,
+        return arrangements.stream().map(arrangement -> new ArrangementResponse(arrangement,
                 includeAll,
                 includeAllCustomer,
                 includeAllActivities)).toList();
-
-        return response;
     }
 
     //POST
     public ArrangementResponse createArrangement(ArrangementRequest body) {
 
         Customer customer = customerRepo.findByUsername(body.getCustomerUsername());
-        if(customer == null) {
+        if (customer == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
         }
-
         List<Reservation> reservations = body.getReservationIds().stream().map(reservationRequest -> {
-
             Reservation reservation = reservationRepo.findById(reservationRequest.describeConstable().get()).get();
-
             Activity activity = activityRepo.findById(reservation.getActivity().getId()).get();
-
             activity.setId(reservation.getActivity().getId());
 
             reservation.setActivity(activity);
@@ -77,26 +60,29 @@ public class ArrangementService {
             return reservation;
         }).toList();
 
-
-
         Arrangement arrangement = new Arrangement();
         arrangement.setCustomer(customer);
         arrangement.setReservations(reservations);
         arrangement.setParticipants(body.getParticipants());
+        arrangement.setName(body.getName());
+        arrangement.setArrangementStart(body.getArrangementStart());
+        arrangement.setArrangementEnd(body.getArrangementEnd());
+
         Arrangement savedArrangement = arrangementRepo.save(arrangement);
 
         return new ArrangementResponse(savedArrangement, true, true, true);
     }
 
     //PUT
-    public ArrangementResponse editArrangement(int id, ArrangementRequest body, List<Integer> reservationIds) {
+    public ArrangementResponse editArrangement(int id, ArrangementRequest body) {
         Arrangement arrangement = arrangementRepo.findById(id).get();
 
         arrangement.setName(body.getName());
         arrangement.setParticipants(body.getParticipants());
-        //arrangement.getReservations().clear();
+        arrangement.setArrangementStart(body.getArrangementStart());
+        arrangement.setArrangementEnd(body.getArrangementEnd());
 
-        for (Integer reservationId: body.getReservationIds()) {
+        for (Integer reservationId : body.getReservationIds()) {
             Reservation reservation = reservationRepo.findById(reservationId).get();
             arrangement.addReservation(reservation);
         }
@@ -105,7 +91,7 @@ public class ArrangementService {
         return new ArrangementResponse(editedArrangement, true, true, true);
     }
 
-    public ArrangementResponse findById(int id){
+    public ArrangementResponse findById(int id) {
         Arrangement arrangement = arrangementRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No arrangement with this ID is found"));
         return new ArrangementResponse(arrangement, true, true, true);
