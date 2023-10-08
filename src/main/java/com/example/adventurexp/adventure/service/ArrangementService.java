@@ -71,6 +71,7 @@ public class ArrangementService {
         arrangement.setName(body.getName());
         arrangement.setArrangementStart(body.getArrangementStart());
         arrangement.setArrangementEnd(body.getArrangementEnd());
+        //TODO set aggregated price
 
         Arrangement savedArrangement = arrangementRepo.save(arrangement);
 

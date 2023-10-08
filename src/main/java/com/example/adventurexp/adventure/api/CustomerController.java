@@ -11,12 +11,12 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/costumer")
-public class CostumerController {
+@RequestMapping("api/customer")
+public class CustomerController {
 
     CustomerService customerService;
 
-    public CostumerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
