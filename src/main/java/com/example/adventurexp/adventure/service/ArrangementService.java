@@ -48,6 +48,7 @@ public class ArrangementService {
         if (customer == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
         }
+
         List<Reservation> reservations = body.getReservationIds().stream().map(reservationRequest -> {
             Reservation reservation = reservationRepo.findById(reservationRequest.describeConstable().get()).get();
             Activity activity = activityRepo.findById(reservation.getActivity().getId()).get();
@@ -57,8 +58,11 @@ public class ArrangementService {
             reservation.setParticipants(reservation.getParticipants());
             reservation.setReservationStart(reservation.getReservationStart());
             reservation.setReservationEnd(reservation.getReservationEnd());
+
+
             return reservation;
         }).toList();
+
 
         Arrangement arrangement = new Arrangement();
         arrangement.setCustomer(customer);

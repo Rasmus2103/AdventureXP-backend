@@ -169,12 +169,14 @@ public class DataSetup implements ApplicationRunner {
                         LocalDateTime arrangementEnd = arrangementStart.plusHours(-1).plusHours(random.nextInt(5) + 1);
                         Arrangement arrangement = new Arrangement(customer, participants, name, arrangementStart, arrangementEnd);
 
+                        double totalprice = 0;
                         int numReservations = random.nextInt(reservations.size()) + 1; // Random number of activities (1 to the total number of activities)
                         for (int j = 0; j < numReservations; j++) {
                                 Reservation reservation = reservations.get(random.nextInt(reservations.size()));
                                 arrangement.addReservation(reservation);
+                                totalprice = totalprice + reservation.getTotalPrice();
                         }
-
+                        arrangement.setAggregatePrice(totalprice);
                         arrangements.add(arrangement);
                 }
 

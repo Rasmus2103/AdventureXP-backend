@@ -93,7 +93,7 @@ public class arrangementServiceTest {
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
-/* TODO make these test work and
+/* TODO make these test work
 
     @Test
     void testEditArrangement(){

@@ -36,8 +36,15 @@ public class Reservation extends AdminDetails {
         this.activity = activity;
         this.reservationStart = reservationStart;
         this.reservationEnd = reservationEnd;
+        this.totalPrice = calculateTotalPrice();
         customer.addReservation(this);
         activity.addReservation(this);
+    }
+
+    private double calculateTotalPrice() {
+        Duration duration = Duration.between(reservationStart, reservationEnd);
+        return duration.toHours() * activity.getPrice();
+
     }
 
 }

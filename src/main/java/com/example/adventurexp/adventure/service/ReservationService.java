@@ -86,7 +86,14 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No employee available in this period");
         }
 
+
+        //TODO check om customer er ældre end activity minAge
+
         double totalPrice = calculateTotalPrice(activity, body.getReservationStart(), body.getReservationEnd());
+
+        // TODO "betalingen" virker ikke
+        customer.setCredit(customer.getCredit() - totalPrice);
+        customerRepo.save(customer);
 
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);
