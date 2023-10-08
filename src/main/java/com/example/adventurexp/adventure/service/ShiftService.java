@@ -48,7 +48,12 @@ public class ShiftService {
         Activity activity = activityRepo.findById(body.getActivityId()).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No activity with this ID is found"));
 
-        employee.getShifts();
+        List<Shift> shifts = employee.getShifts();
+        for (Shift shift : shifts) {
+            if (shift.getShiftStart().isBefore(body.getShiftEnd()) && shift.getShiftEnd().isAfter(body.getShiftStart())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Employee already has a shift at this time");
+            }
+        }
 
         Shift shift = new Shift(employee, activity, body.getShiftStart(), body.getShiftEnd());
         shift = shiftRepo.save(shift);
