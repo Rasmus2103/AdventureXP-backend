@@ -6,6 +6,7 @@ import com.example.adventurexp.adventure.entity.Activity;
 import com.example.adventurexp.adventure.entity.Arrangement;
 import com.example.adventurexp.adventure.entity.Customer;
 import com.example.adventurexp.adventure.entity.Reservation;
+import com.example.adventurexp.adventure.repository.ActivityRepo;
 import com.example.adventurexp.adventure.repository.ArrangementRepo;
 import com.example.adventurexp.adventure.repository.CustomerRepo;
 import com.example.adventurexp.adventure.repository.ReservationRepo;
@@ -22,11 +23,13 @@ public class ArrangementService {
     ArrangementRepo arrangementRepo;
     ReservationRepo reservationRepo;
     CustomerRepo customerRepo;
+    ActivityRepo activityRepo;
 
-    public ArrangementService(ArrangementRepo arrangementRepo, ReservationRepo reservationRepo, CustomerRepo customerRepo) {
+    public ArrangementService(ArrangementRepo arrangementRepo, ReservationRepo reservationRepo, CustomerRepo customerRepo,  ActivityRepo activityRepo) {
         this.arrangementRepo = arrangementRepo;
         this.reservationRepo = reservationRepo;
         this.customerRepo = customerRepo;
+        this.activityRepo = activityRepo;
     }
 
     //GET
@@ -59,14 +62,18 @@ public class ArrangementService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
         }
 
-        List<Reservation> reservations = body.getReservations().stream().map(reservationRequest -> {
-            Activity activity = new Activity();
-            activity.setId(reservationRequest.getActivityId());
-            Reservation reservation = new Reservation();
+        List<Reservation> reservations = body.getReservationIds().stream().map(reservationRequest -> {
+
+            Reservation reservation = reservationRepo.findById(reservationRequest.describeConstable().get()).get();
+
+            Activity activity = activityRepo.findById(reservation.getActivity().getId()).get();
+
+            activity.setId(reservation.getActivity().getId());
+
             reservation.setActivity(activity);
-            reservation.setParticipants(reservationRequest.getParticipants());
-            reservation.setReservationStart(reservationRequest.getReservationStart());
-            reservation.setReservationEnd(reservationRequest.getReservationEnd());
+            reservation.setParticipants(reservation.getParticipants());
+            reservation.setReservationStart(reservation.getReservationStart());
+            reservation.setReservationEnd(reservation.getReservationEnd());
             return reservation;
         }).toList();
 
@@ -87,16 +94,21 @@ public class ArrangementService {
 
         arrangement.setName(body.getName());
         arrangement.setParticipants(body.getParticipants());
-        arrangement.getReservations().clear();
+        //arrangement.getReservations().clear();
 
-        List<Reservation> reservations = body.getReservations().stream()
-                .map(reservationRequest -> reservationRepo.findById(reservationIds.iterator().next()).get())
-                .toList();
-
-        reservations.forEach(arrangement::addReservation);
+        for (Integer reservationId: body.getReservationIds()) {
+            Reservation reservation = reservationRepo.findById(reservationId).get();
+            arrangement.addReservation(reservation);
+        }
 
         Arrangement editedArrangement = arrangementRepo.save(arrangement);
         return new ArrangementResponse(editedArrangement, true, true, true);
+    }
+
+    public ArrangementResponse findById(int id){
+        Arrangement arrangement = arrangementRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No arrangement with this ID is found"));
+        return new ArrangementResponse(arrangement, true, true, true);
     }
 
     //DELETE

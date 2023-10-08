@@ -75,16 +75,15 @@ public class ReservationService {
         }
         // check om der er en medarbejder på arbejde i det tidsrum
         List<Shift> shifts = shiftRepo.findAllByActivity(activity);
-        if (!shifts.isEmpty()){
-            for (Shift s : shifts) {
-                if (body.getReservationStart().isBefore(s.getShiftEnd()) &&
-                        body.getReservationEnd().isAfter(s.getShiftStart()) ||
-                        body.getReservationStart().isEqual(s.getShiftStart()) ||
-                        body.getReservationEnd().isEqual(s.getShiftEnd())
-                ) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No employee available in this period");
-                }
+        boolean employeeAvailable = false;
+        for (Shift s : shifts) {
+            if (body.getReservationStart().isBefore(s.getShiftEnd()) && body.getReservationEnd().isAfter(s.getShiftStart())) {
+                employeeAvailable = true;
+                break;
             }
+        }
+        if (!employeeAvailable) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No employee available in this period");
         }
 
         double totalPrice = calculateTotalPrice(activity, body.getReservationStart(), body.getReservationEnd());
