@@ -5,6 +5,7 @@ import com.example.adventurexp.adventure.dto.ReservationResponse;
 import com.example.adventurexp.adventure.entity.Activity;
 import com.example.adventurexp.adventure.entity.Customer;
 import com.example.adventurexp.adventure.entity.Reservation;
+import com.example.adventurexp.adventure.entity.Shift;
 import com.example.adventurexp.adventure.repository.ActivityRepo;
 import com.example.adventurexp.adventure.repository.CustomerRepo;
 import com.example.adventurexp.adventure.repository.ReservationRepo;
@@ -25,37 +26,65 @@ public class ReservationService {
     ReservationRepo reservationRepo;
     CustomerRepo customerRepo;
     ActivityRepo activityRepo;
+    ShiftRepo shiftRepo;
 
     public ReservationService(ReservationRepo reservationRepo, CustomerRepo customerRepo, ActivityRepo activityRepo, ShiftRepo shiftRepo) {
         this.reservationRepo = reservationRepo;
         this.customerRepo = customerRepo;
         this.activityRepo = activityRepo;
+        this.shiftRepo = shiftRepo;
     }
 
     public List<ReservationResponse> getReservations(boolean includeAll, boolean includeAllCustomer, boolean includeAllActivities) {
         List<Reservation> reservations = reservationRepo.findAll();
 
-        List<ReservationResponse> response = reservations.stream().map(reservation -> new ReservationResponse(reservation,
+        return reservations.stream().map(reservation -> new ReservationResponse(reservation,
                 includeAll,
                 includeAllCustomer,
                 includeAllActivities)).toList();
-
-        return response;
     }
 
     public ReservationResponse makeReservation(ReservationRequest body) {
-        if(body.getReservationStart().isBefore(LocalDateTime.now())) {
+        if(body.getReservationStart().isBefore(LocalDateTime.now()) || body.getReservationEnd().isBefore(LocalDateTime.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date in past not allowed");
         }
-
+        if (body.getReservationStart().isAfter(body.getReservationEnd())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date must be before end date");
+        }
         Customer customer = customerRepo.findByUsername(body.getUsername());
         if(customer == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
         }
-
         Activity activity = activityRepo.findAllById(body.getActivityId());
         if(activity == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid activity");
+        }
+
+        // check om der er en reservation i det tidsrum
+        List<Reservation> activityReservations = reservationRepo.findAllByActivity(activity);
+        if (!activityReservations.isEmpty()){
+            for (Reservation r : activityReservations) {
+                if (body.getReservationStart().isBefore(r.getReservationEnd()) &&
+                        body.getReservationEnd().isAfter(r.getReservationStart()) ||
+                        body.getReservationStart().isEqual(r.getReservationStart()) ||
+                        body.getReservationEnd().isEqual(r.getReservationEnd())
+                ) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Activity is reserved in this period");
+                }
+            }
+        }
+        // check om der er en medarbejder på arbejde i det tidsrum
+        List<Shift> shifts = shiftRepo.findAllByActivity(activity);
+        if (!shifts.isEmpty()){
+            for (Shift s : shifts) {
+                if (body.getReservationStart().isBefore(s.getShiftEnd()) &&
+                        body.getReservationEnd().isAfter(s.getShiftStart()) ||
+                        body.getReservationStart().isEqual(s.getShiftStart()) ||
+                        body.getReservationEnd().isEqual(s.getShiftEnd())
+                ) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No employee available in this period");
+                }
+            }
         }
 
         double totalPrice = calculateTotalPrice(activity, body.getReservationStart(), body.getReservationEnd());
@@ -102,7 +131,6 @@ public class ReservationService {
         return ResponseEntity.ok(true);
     }
 
-
     public List<Reservation> getReservationsByCustomer(String username) {
         Customer customer = customerRepo.findById(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No customer with this USERNAME is found"));
@@ -113,6 +141,12 @@ public class ReservationService {
         Reservation reservation = reservationRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No reservation with this ID is found"));
         reservationRepo.delete(reservation);
+    }
+
+    public ReservationResponse findById(int id) {
+        Reservation reservation = reservationRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No reservation with this ID is found"));
+        return new ReservationResponse(reservation, true, true, true);
     }
 
     private double calculateTotalPrice(Activity activity, LocalDateTime reservationStart, LocalDateTime reservationEnd) {

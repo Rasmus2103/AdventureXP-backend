@@ -13,4 +13,7 @@ public interface ReservationRepo extends JpaRepository<Reservation,Integer> {
     Optional<Reservation> findById(int id);
 
     List<Reservation> findByActivity(Activity activity);
+
+    List<Reservation> findAllByActivity(Activity activity);
+
 }
