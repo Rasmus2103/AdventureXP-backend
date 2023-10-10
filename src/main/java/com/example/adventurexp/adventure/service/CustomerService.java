@@ -3,6 +3,7 @@ package com.example.adventurexp.adventure.service;
 import com.example.adventurexp.adventure.dto.*;
 import com.example.adventurexp.adventure.entity.Customer;
 import com.example.adventurexp.adventure.repository.CustomerRepo;
+import com.example.adventurexp.security.entity.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,12 @@ public class CustomerService {
 
     public CustomerResponse addCustomer(CustomerRequest body) {
         if(customerRepo.existsById(body.getUsername())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"This employee already exists");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"This username already exists");
         }
 
         Customer newCustomer = CustomerRequest.getCustomerEntity(body);
-
+        newCustomer.addRole(Role.USER);
+        newCustomer.addRole(Role.ADMIN);
         newCustomer = customerRepo.save(newCustomer);
         return new CustomerResponse(newCustomer, true);
     }
