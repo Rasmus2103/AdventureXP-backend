@@ -4,6 +4,7 @@ import com.example.adventurexp.adventure.dto.EmployeeRequest;
 import com.example.adventurexp.adventure.dto.EmployeeResponse;
 import com.example.adventurexp.adventure.entity.Employee;
 import com.example.adventurexp.adventure.repository.EmployeeRepo;
+import com.example.adventurexp.security.entity.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class EmployeeService {
 
         Employee newEmployee = EmployeeRequest.getEmployeeEntity(body);
 
+        newEmployee.addRole(Role.EMPLOYEE);
         newEmployee = employeeRepo.save(newEmployee);
         return new EmployeeResponse(newEmployee, true);
     }
@@ -67,7 +69,7 @@ public class EmployeeService {
 
     private Employee getEmployeeByUsername(String username) {
         return employeeRepo.findById(username).
-                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Member with this username does not exist"));
+                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"employee with this username does not exist"));
     }
 
 }
