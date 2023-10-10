@@ -20,9 +20,9 @@ public class ShiftResponse {
     private int id;
     private EmployeeResponse employeeResponse;
     private ActivityResponse activityResponse;
-    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime shiftStart;
-    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime shiftEnd;
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     LocalDate created;

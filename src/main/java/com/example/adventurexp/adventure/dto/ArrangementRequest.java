@@ -20,9 +20,9 @@ public class ArrangementRequest {
     String customerUsername;
     int participants;
     List<Integer> reservationIds;
-    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime arrangementStart;
-    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime arrangementEnd;
 
     public ArrangementRequest(ArrangementResponse arrangementResponse) {

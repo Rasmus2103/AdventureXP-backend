@@ -25,9 +25,9 @@ public class ArrangementResponse {
     List<ReservationResponse> reservations;
     String name;
     double aggregatePrice;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
     LocalDateTime arrangementStart;
-    @JsonFormat(pattern = "yyyy-MM-dd-hh", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
     LocalDateTime arrangementEnd;
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     LocalDate created;

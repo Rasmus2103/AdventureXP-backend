@@ -3,6 +3,7 @@ package com.example.adventurexp.adventure.api;
 import com.example.adventurexp.adventure.dto.ArrangementRequest;
 import com.example.adventurexp.adventure.dto.ArrangementResponse;
 import com.example.adventurexp.adventure.service.ArrangementService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class ArrangementController {
         return arrangementService.getAllArrangements(true, false, false);
     }
 
-    @PostMapping()
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ArrangementResponse createArrangement(@RequestBody ArrangementRequest body) {
         return arrangementService.createArrangement(body);
     }

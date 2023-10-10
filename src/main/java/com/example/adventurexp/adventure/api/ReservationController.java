@@ -28,10 +28,15 @@ public class ReservationController {
         return reservationService.getReservations(true, includeAllCustomer, includeAllActivities);
     }
 
-    @GetMapping(path = "/{username}")
-    List<ReservationResponse> getReservationsByCustomer(@PathVariable String username) {
-        return reservationService.getReservationsByCustomer(username);
+    @GetMapping(path = "/{id}")
+    ReservationResponse findById(@PathVariable int id) {
+        return reservationService.findById(id);
     }
+
+//    @GetMapping(path = "/{username}")
+//    List<ReservationResponse> getReservationsByCustomer(@PathVariable String username) {
+//        return reservationService.getReservationsByCustomer(username);
+//    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ReservationResponse makeReservation(@RequestBody ReservationRequest body) {

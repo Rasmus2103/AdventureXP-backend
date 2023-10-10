@@ -16,10 +16,10 @@ public class ReservationRequest {
     String username;
     int participants;
     int activityId;
-    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime reservationStart;
-    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime reservationEnd;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
+    LocalDateTime reservationStart;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
+    LocalDateTime reservationEnd;
 
     public ReservationRequest(ReservationResponse r){
         this.username = r.getCustomer().getUsername();
