@@ -49,6 +49,7 @@ public class ArrangementService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
         }
 
+
         List<Reservation> reservations = body.getReservationIds().stream().map(reservationRequest -> {
             Reservation reservation = reservationRepo.findById(reservationRequest.describeConstable().get()).get();
             Activity activity = activityRepo.findById(reservation.getActivity().getId()).get();
@@ -71,6 +72,7 @@ public class ArrangementService {
         arrangement.setName(body.getName());
         arrangement.setArrangementStart(body.getArrangementStart());
         arrangement.setArrangementEnd(body.getArrangementEnd());
+        arrangement.setAggregatePrice(arrangement.getAggregatePrice());
         //TODO set aggregated price
 
         Arrangement savedArrangement = arrangementRepo.save(arrangement);
