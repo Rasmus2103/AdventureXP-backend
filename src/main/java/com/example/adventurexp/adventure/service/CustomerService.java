@@ -45,7 +45,6 @@ public class CustomerService {
         if(!body.getUsername().equals(username)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cannot change username");
         }
-        customer.setPassword(body.getPassword());
         customer.setEmail(body.getEmail());
         customer.setFirstName(body.getFirstName());
         customer.setLastName(body.getLastName());

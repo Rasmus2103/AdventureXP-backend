@@ -47,7 +47,6 @@ public class EmployeeService {
         if(!body.getUsername().equals(username)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cannot change username");
         }
-        employee.setPassword(body.getPassword());
         employee.setEmail(body.getEmail());
         employee.setFirstName(body.getFirstName());
         employee.setLastName(body.getLastName());
