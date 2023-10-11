@@ -3,10 +3,13 @@ package com.example.adventurexp.adventure.api;
 import com.example.adventurexp.adventure.dto.CustomerRequest;
 import com.example.adventurexp.adventure.dto.CustomerResponse;
 import com.example.adventurexp.adventure.service.CustomerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -27,6 +30,16 @@ public class CustomerController {
 
     @GetMapping(path = "/{username}")
     CustomerResponse getCustomerByUsername(@PathVariable String username) {
+        return customerService.findById(username);
+    }
+
+    @GetMapping("/profile")
+    public CustomerResponse getLoggedInCustomerProfile(Principal principal) {
+        System.out.println("Principal: " + principal);
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
+        }
+        String username = principal.getName();
         return customerService.findById(username);
     }
 

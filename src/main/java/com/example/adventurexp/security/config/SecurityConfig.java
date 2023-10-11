@@ -83,6 +83,7 @@ public class SecurityConfig {
                         //Employees Endpoints
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/profile")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/employee")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/employee/{username}")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/employee/{username}")).permitAll()
@@ -97,6 +98,7 @@ public class SecurityConfig {
                         //Customer Endpoints
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/{username}")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/profile")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/customer")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/customer/{username}")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/customer/{username}")).permitAll()
