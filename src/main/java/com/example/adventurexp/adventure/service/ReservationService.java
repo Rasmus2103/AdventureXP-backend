@@ -96,7 +96,6 @@ public class ReservationService {
 
         double totalPrice = calculateTotalPrice(activity, body.getReservationStart(), body.getReservationEnd());
 
-        // TODO "betalingen" virker ikke
         customer.setCredit(customer.getCredit() - totalPrice);
         customerRepo.save(customer);
 
