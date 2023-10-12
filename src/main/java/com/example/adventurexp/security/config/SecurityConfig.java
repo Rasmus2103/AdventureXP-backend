@@ -37,7 +37,6 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 public class SecurityConfig {
 
-    //Remove default value below BEFORE deployment
     @Value("${app.secret-key}")
     private String tokenSecret;
 
@@ -62,71 +61,100 @@ public class SecurityConfig {
                                 )
                                 .authenticationEntryPoint(new CustomOAuth2AuthenticationEntryPoint()));
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/auth/login")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/user-with-role")).permitAll() //Clients can create a user for themself
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/auth/login")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/user-with-role")).permitAll() //Clients can create a user for themself
 
-                        //This is for demo purposes only, and should be removed for a real system
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/demo/anonymous")).permitAll()
 
-                        //Allow index.html and everything else on root level. So make sure to put ALL your endpoints under /api
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/*")).permitAll()
+                //Allow index.html and everything else on root level. So make sure to put ALL your endpoints under /api
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/*")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
 
-                        .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
+                //Use this to completely disable security (Will not work if endpoints has been marked with @PreAuthorize)
+                //.requestMatchers("/", "/**").permitAll());
+                //.requestMatchers(mvcMatcherBuilder.pattern("/**")).permitAll()
 
-                        //Use this to completely disable security (Will not work if endpoints has been marked with @PreAuthorize)
-                        //.requestMatchers("/", "/**").permitAll());
-                        //.requestMatchers(mvcMatcherBuilder.pattern("/**")).permitAll()
+                //Employees Endpoints
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee")).hasAuthority("ADMIN")
 
-                        //This is for demo purposes only, and should be removed for a real system
-                        //.requestMatchers(HttpMethod.GET, "/api/demouser/user-only").hasAuthority("USER")
-                        //.requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/cars/admin")).hasAuthority("ADMIN")
-                        //Employees Endpoints
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/{username}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/profile")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/employee")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/employee/{username}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/employee/{username}")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/{username}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/{username}")).hasAuthority("EMPLOYEE")
 
-                        //Shift Endpoints
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift/{id}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "api/shift")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "api/shift/{id}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "api/shift/{id}")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/profile")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee/profile")).hasAuthority("EMPLOYEE")
 
-                        //Customer Endpoints
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/{username}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/profile")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/customer")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/customer/{username}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/customer/{username}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PATCH, "/api/customer/addcredit/{username}/{value}")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/employee")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/employee/{username}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/employee/{username}")).hasAuthority("EMPLOYEE")
 
-                        //Reservations Endpoints
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/reservation/{id}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/reservation/{id}")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/employee/{username}")).hasAuthority("ADMIN")
 
-                        //Arrangements Endpoints
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/{id}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/arrangements")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/arrangements/{id}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/arrangements/{id}")).permitAll()
+                //Shift Endpoints
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift")).hasAuthority("EMPLOYEE")
 
-                        //Activity Endpoints
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity/{id}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/activity/{id}")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/activity")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/activity/{id}")).permitAll()
-//
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift/{id}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "api/shift/{id}")).hasAuthority("EMPLOYEE")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "api/shift")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "api/shift/{id}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "api/shift/{id}")).hasAuthority("ADMIN")
+
+                //Customer Endpoints
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/{username}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/{username}")).hasAuthority("USER")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/profile")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/customer/profile")).hasAuthority("USER")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/customer")).permitAll()
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/customer/{username}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/customer/{username}")).hasAuthority("USER")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/customer/{username}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/customer/{username}")).hasAuthority("USER")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PATCH, "/api/customer/addcredit/{username}/{value}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PATCH, "/api/customer/addcredit/{username}/{value}")).hasAuthority("USER")
+
+                //Reservations Endpoints
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).hasAuthority("EMPLOYEE")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).hasAuthority("USER")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).hasAuthority("EMPLOYEE")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).hasAuthority("USER")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/reservation/{id}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/reservation/{id}")).hasAuthority("ADMIN")
+
+                //Arrangements Endpoints
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements")).hasAuthority("EMPLOYEE")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/{id}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/{id}")).hasAuthority("USER")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/arrangements/{id}")).hasAuthority("EMPLOYEE")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/arrangements")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/arrangements")).hasAuthority("USER")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/arrangements/{id}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/arrangements/{id}")).hasAuthority("USER")
+
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/arrangements/{id}")).hasAuthority("ADMIN")
+
+                //Activity Endpoints
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/activity/{id}")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/activity/{id}")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/activity")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/activity/{id}")).hasAuthority("ADMIN")
         );
-
 
         return http.build();
     }

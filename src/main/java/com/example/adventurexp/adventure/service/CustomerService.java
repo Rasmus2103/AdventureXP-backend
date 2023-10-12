@@ -35,7 +35,9 @@ public class CustomerService {
         }
 
         Customer newCustomer = CustomerRequest.getCustomerEntity(body);
+
         newCustomer.addRole(Role.USER);
+
         newCustomer = customerRepo.save(newCustomer);
         return new CustomerResponse(newCustomer, true);
     }
