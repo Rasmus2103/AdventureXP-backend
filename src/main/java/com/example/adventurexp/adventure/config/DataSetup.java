@@ -50,12 +50,18 @@ public class DataSetup implements ApplicationRunner {
                 employee.addRole(Role.USER);
                 employee.addRole(Role.EMPLOYEE);
                 employeeRepo.save(employee);
+                Employee employeetest = new Employee("emp", "emp", "emp", "emp", "emp", "emp", "emp");
+                employeetest.addRole(Role.EMPLOYEE);
+                employeeRepo.save(employeetest);
 
                 List<Customer> customers = generateCustomers(10);
                 for (Customer c: customers){
                         c.addRole(Role.USER);
                 }
                 customerRepo.saveAll(customers);
+                Customer customer = new Customer("user", "user", "user", "user", "user", "user", "user");
+                customer.addRole(Role.USER);
+                customerRepo.save(customer);
 
                 List<Activity> activities = generateActivities(10);
                 activityRepo.saveAll(activities);
