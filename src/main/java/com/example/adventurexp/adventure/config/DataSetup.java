@@ -9,9 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Configuration
 public class DataSetup implements ApplicationRunner {
@@ -69,8 +67,8 @@ public class DataSetup implements ApplicationRunner {
                 List<Reservation> reservations = generateReservations(10, customers, activities);
                 reservationRepo.saveAll(reservations);
 
-                List<Arrangement> arrangements = generateArrangements(5, customers, reservations);
-                arrangementRepo.saveAll(arrangements);
+               // List<Arrangement> arrangements = generateArrangements(5, customers, reservations);
+                //arrangementRepo.saveAll(arrangements);
 
                 List<Shift> shifts = generateShifts(10, employees1, activities );
                 shiftRepo.saveAll(shifts);
@@ -167,7 +165,42 @@ public class DataSetup implements ApplicationRunner {
                 return reservations;
         }
 
-        public static List<Arrangement> generateArrangements(int numberOfArrangements, List<Customer> customers, List<Reservation> reservations) {
+        /*public static List<Arrangement> generateArrangements(int numberOfArrangements, List<Customer> customers, List<Reservation> reservations) {
+                List<Arrangement> arrangements = new ArrayList<>();
+                Random random = new Random();
+
+                List<Reservation> availableReservations = new ArrayList<>(reservations); // Copy of reservations
+
+                for (int i = 0; i < numberOfArrangements; i++) {
+                        if (availableReservations.isEmpty()) {
+                                // If all reservations have been used, break or handle as needed
+                                break;
+                        }
+
+                        Customer customer = customers.get(random.nextInt(customers.size()));
+                        int participants = random.nextInt(50) + 1;
+                        String[] names = {"Birthday party", "Company outing", "Bachelor party", "Bachelorette party", "Family reunion", "Wedding"};
+                        String name = names[random.nextInt(names.length)];
+                        LocalDateTime arrangementStart = LocalDateTime.of(2023, 11, 1, 0, 0).plusDays(random.nextInt(30)).plusHours(random.nextInt(24));
+                        LocalDateTime arrangementEnd = arrangementStart.plusHours(-1).plusHours(random.nextInt(5) + 1);
+                        Arrangement arrangement = new Arrangement(customer, participants, name, arrangementStart, arrangementEnd);
+
+                        double totalprice = 0;
+
+                        if (!availableReservations.isEmpty()) {
+                                int reservationIndex = random.nextInt(availableReservations.size());
+                                Reservation reservation = availableReservations.remove(reservationIndex); // Remove the used reservation
+                                arrangement.addReservation(reservation);
+                                totalprice += reservation.getTotalPrice();
+                        }
+
+                        arrangement.setAggregatePrice(totalprice);
+                        arrangements.add(arrangement);
+                }
+
+                return arrangements;
+        }
+        /*public static List<Arrangement> generateArrangements(int numberOfArrangements, List<Customer> customers, List<Reservation> reservations) {
                 List<Arrangement> arrangements = new ArrayList<>();
                 Random random = new Random();
 
@@ -182,6 +215,20 @@ public class DataSetup implements ApplicationRunner {
 
                         double totalprice = 0;
                         int numReservations = random.nextInt(reservations.size()) + 1; // Random number of activities (1 to the total number of activities)
+
+                        List<Reservation> shuffledReservations = new ArrayList<>(reservations);
+                        Collections.shuffle(shuffledReservations);
+
+                        Set<Reservation> usedReservations = new HashSet<>();
+
+                        for (int j = 0; j < numReservations && j < shuffledReservations.size(); j++) {
+                                Reservation reservation = shuffledReservations.get(j);
+                                if (!usedReservations.contains(reservation)) {
+                                        arrangement.addReservation(reservation);
+                                        totalprice += reservation.getTotalPrice();
+                                        usedReservations.add(reservation);
+                                }
+                        }
                         for (int j = 0; j < numReservations; j++) {
                                 Reservation reservation = reservations.get(random.nextInt(reservations.size()));
                                 arrangement.addReservation(reservation);
@@ -192,7 +239,7 @@ public class DataSetup implements ApplicationRunner {
                 }
 
                 return arrangements;
-        }
+        }*/
 
 
 
