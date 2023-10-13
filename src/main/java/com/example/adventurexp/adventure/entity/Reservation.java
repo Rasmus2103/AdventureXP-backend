@@ -2,14 +2,10 @@ package com.example.adventurexp.adventure.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,26 +19,32 @@ public class Reservation extends AdminDetails {
     private int id;
     @ManyToOne()
     private Customer customer;
-    @ManyToMany()
-    private List<Activity> activities;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate reservationStart;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    private LocalDate reservationEnd;
+    @Column
+    private int participants;
+    @ManyToOne()
+    private Activity activity;
+    @Column
+    private double totalPrice;
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime reservationStart;
+    @JsonFormat(pattern = "yyyy-MM-dd-HH-mm", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime reservationEnd;
 
-    public Reservation(Customer customer, LocalDate reservationStart, LocalDate reservationEnd) {
+    public Reservation(Customer customer, int participants, Activity activity, LocalDateTime reservationStart, LocalDateTime reservationEnd) {
         this.customer = customer;
-        this.activities = new ArrayList<>();
+        this.participants = participants;
+        this.activity = activity;
         this.reservationStart = reservationStart;
         this.reservationEnd = reservationEnd;
+        this.totalPrice = calculateTotalPrice();
         customer.addReservation(this);
+        activity.addReservation(this);
     }
 
-    public void addActivity(Activity activity){
-        if (activities == null)
-            activities = new ArrayList<>();
-        else
-            activities.add(activity);
+    private double calculateTotalPrice() {
+        Duration duration = Duration.between(reservationStart, reservationEnd);
+        return duration.toHours() * activity.getPrice();
+
     }
 
 }

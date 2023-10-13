@@ -3,11 +3,10 @@ package com.example.adventurexp.adventure.dto;
 import com.example.adventurexp.adventure.entity.Activity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
 import lombok.*;
-import org.hibernate.mapping.List;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,24 +19,30 @@ public class ActivityResponse {
 
     int id;
     private String name;
-    private double price;
+    private double pricePrHour;
     private int minAge;
     private int capacity;
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     LocalDate created;
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     LocalDate edited;
+    List<ReservationResponse> reservations;
 
     public ActivityResponse(Activity activity, boolean includeAll) {
         this.name = activity.getName();
-        this.price = activity.getPrice();
+        this.pricePrHour = activity.getPrice();
         this.minAge = activity.getMinAge();
         this.capacity = activity.getCapacity();
         if (includeAll) {
             this.id = activity.getId();
             this.created = activity.getCreated();
             this.edited = activity.getEdited();
+            this.reservations = activity.getReservations().stream().map(r -> new ReservationResponse(r, true, true, false)).toList();
         }
+    }
+
+    public void addReservation(ReservationResponse reservation) {
+        reservations.add(reservation);
     }
 
 }

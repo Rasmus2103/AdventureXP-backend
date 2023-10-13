@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import com.example.adventurexp.security.entity.UserWithRoles;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +32,10 @@ public class Customer extends UserWithRoles {
     @Column
     private String address;
     @Column
-    private int credit;
+    private double credit;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Reservation> reservations;
 
     public Customer(String firstName, String lastName, String phoneNumber, String address, String username, String password, String email) {

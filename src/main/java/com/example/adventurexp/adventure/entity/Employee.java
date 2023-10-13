@@ -29,7 +29,7 @@ public class Employee extends UserWithRoles {
     @Column
     private String address;
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Shift> shifts;
 
     public Employee(String firstName, String lastName, String phoneNumber, String address, String username, String password, String email) {

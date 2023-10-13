@@ -1,9 +1,9 @@
 package com.example.adventurexp.adventure.dto;
 
 import com.example.adventurexp.adventure.entity.Customer;
+import com.example.adventurexp.security.entity.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -29,6 +29,7 @@ public class CustomerResponse {
     LocalDate created;
     @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
     LocalDate edited;
+    private double credit;
     List<ReservationResponse> reservations;
 
     public CustomerResponse(Customer customer, boolean includeAll){
@@ -38,10 +39,11 @@ public class CustomerResponse {
         this.lastName = customer.getLastName();
         this.phoneNumber = customer.getPhoneNumber();
         this.address = customer.getAddress();
+        this.credit = customer.getCredit();
         if(includeAll){
             this.created = customer.getCreated();
             this.edited = customer.getEdited();
-            this.reservations = customer.getReservations().stream().map(c -> new ReservationResponse(c, true, true, true)).toList();
+            this.reservations = customer.getReservations().stream().map(c -> new ReservationResponse(c, true, false, true)).toList();
         }
     }
 
