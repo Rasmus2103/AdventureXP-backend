@@ -101,7 +101,7 @@ public class reservationServiceTest {
 
     @Test
     void addReservationSucces(){
-        ReservationRequest r3 = new ReservationRequest(c1.getUsername(), 8, a2.getId(), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
+        ReservationRequest r3 = new ReservationRequest(c1.getUsername(), 8, a2.getId(), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1));
         ReservationResponse response = reservationService.makeReservation(r3);
         assertEquals(c1.getUsername(), response.getCustomer().getUsername());
         assertEquals(a2.getName(), response.getActivity().getName());
