@@ -101,7 +101,7 @@ public class SecurityConfig {
                 //Reservations Endpoints
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation")).hasAnyAuthority("ADMIN", "USER", "EMPLOYEE")
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/reservation/{username}")).hasAnyAuthority("ADMIN", "USER", "EMPLOYEE")
-                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/reservation")).hasAuthority("USER")
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/api/reservation/{id}")).hasAuthority("ADMIN")
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/api/reservation/{id}")).hasAuthority("ADMIN")
 
