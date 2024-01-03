@@ -3,7 +3,6 @@ package com.example.adventurexp.adventure.api;
 import com.example.adventurexp.adventure.dto.ActivityRequest;
 import com.example.adventurexp.adventure.dto.ActivityResponse;
 import com.example.adventurexp.adventure.service.ActivityService;
-import org.springframework.data.web.JsonPath;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
